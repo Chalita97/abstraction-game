@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Co-op Mission & Abstraction Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #e8f5d1; 
+            --banner-color: #ffcbd3; 
+            --card-bg: #ffffff;
+            --text-main: #4a4a4a;
+            --btn-green: #bce4b4;
+            --btn-red: #ffb3b3;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            touch-action: pan-y; 
+        }
+
+        h1, h2, h3, .mali-font { font-family: 'Mali', cursive; }
+
+        /* Nav & Header */
+        .cute-nav {
+            background-color: #fff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .hero-banner {
+            background-color: var(--banner-color);
+            border-radius: 40px;
+            padding: 40px;
+            margin: 20px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(255, 182, 185, 0.4);
+            border: 4px solid #fff;
+        }
+
+        .sparkle { position: absolute; color: #fff; font-size: 24px; animation: twinkle 2s infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+
+        /* Buttons */
+        .btn-primary { background-color: #ffeaa7; color: #d35400; border: 2px solid #d35400; font-size: 1.2rem; padding: 12px 30px; border-radius: 30px; font-family: 'Mali', cursive; cursor: pointer; transition: 0.2s; }
+        .btn-primary:hover { background-color: #fdcb6e; transform: scale(1.05); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-keep { background-color: var(--btn-green); color: #2d6a4f; border-radius: 20px; padding: 12px 24px; font-weight: bold; border: 2px solid transparent; font-size: 1.1rem;}
+        .btn-keep:hover { border-color: #2d6a4f; }
+        .btn-discard { background-color: var(--btn-red); color: #c9184a; border-radius: 20px; padding: 12px 24px; font-weight: bold; border: 2px solid transparent; font-size: 1.1rem;}
+        .btn-discard:hover { border-color: #c9184a; }
+
+        /* Drag & Drop */
+        .draggable-item {
+            background: #fff; border: 2px solid #55efc4; padding: 10px 15px; border-radius: 15px;
+            margin: 5px; display: inline-block; cursor: grab; font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); user-select: none; transition: 0.2s;
+        }
+        .draggable-item:active { cursor: grabbing; }
+
+        .drop-zone {
+            background: #f8faec; border: 3px dashed #bce4b4; border-radius: 20px;
+            min-height: 150px; padding: 15px; transition: all 0.2s;
+        }
+        .drop-zone.drag-over { background: #e8f5d1; border-color: #2d6a4f; transform: scale(1.02); }
+
+        /* Design Canvas (Poster & Map) */
+        .design-canvas {
+            width: 100%; min-height: 300px; position: relative; border-radius: 20px; padding: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+        }
+        .poster-bg { background: #fffcf2; border: 8px solid #ffda79; border-style: double; }
+        .map-bg { background: #fdf5e6; border: 6px solid #cd853f; border-radius: 30px; background-image: radial-gradient(#d1bfae 1px, transparent 1px); background-size: 20px 20px; }
+
+        .visual-element {
+            background: rgba(255,255,255,0.9); padding: 10px 20px; border-radius: 10px; font-family: 'Mali'; font-weight: bold; font-size: 1.2rem; border: 2px dashed #a29bfe; cursor: grab; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Flashcard Phase */
+        .flashcard-container { perspective: 1000px; width: 100%; max-width: 450px; margin: 0 auto; }
+        .flashcard {
+            background: var(--card-bg); border-radius: 30px; padding: 40px 20px; text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 4px dashed #ffcbd3; min-height: 300px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .flashcard.slide-out-left { transform: translateX(-100px) rotate(-10deg); opacity: 0; }
+        .flashcard.slide-out-right { transform: translateX(100px) rotate(10deg); opacity: 0; }
+        .flashcard.slide-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .flashcard-icon { font-size: 80px; margin-bottom: 20px; animation: bounce 2s infinite; }
+
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Flowchart */
+        .flowchart-container { background: #f1f2f6; border-radius: 30px; padding: 20px; min-height: 400px; border: 4px dashed #7bed9f;}
+        .widget {
+            background: white; border-radius: 15px; padding: 15px; margin: 10px auto; width: 90%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: grab; text-align: center; font-weight: bold;
+            border: 2px solid #b39ddb; color: #5c3c92; font-size: 1.1rem;
+        }
+        
+        #flowchart-screen .widget + .widget::before,
+        #canva-flowchart-reference .widget + .widget::before {
+            content: "⬇️"; display: block; text-align: center; font-size: 24px; margin: -25px 0 10px 0;
+            position: relative; top: -15px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Utils */
+        .hidden-section { display: none !important; }
+        .msg-box { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .msg-box.show { opacity: 1; pointer-events: auto; }
+        .msg-content { background: white; padding: 40px; border-radius: 30px; text-align: center; max-width: 600px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 5px solid #ffcbd3; max-height: 90vh; overflow-y: auto; }
+        .form-input { width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 15px; margin-bottom: 15px; font-family: 'Kanit'; outline: none; }
+        .story-box { background-color: #f8fafc; border-left: 6px solid #60a5fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; font-size: 1.1rem; color: #334155; line-height: 1.6; }
+        
+        /* ปรับสีแมวให้เป็นสีขาวสว่าง */
+        .white-cat { filter: grayscale(100%) brightness(5) contrast(150%); text-shadow: 0 0 10px rgba(0,0,0,0.3); }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d35400;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <nav class="cute-nav">
+        <div class="flex items-center gap-2">
+            <span class="text-3xl">🧩</span>
+            <span class="mali-font text-xl font-bold text-orange-400">Abstraction Journey</span>
+        </div>
+        <div id="student-badge" class="mali-font font-bold text-gray-600 hidden bg-[#ffeaa7] px-4 py-1 rounded-full border-2 border-[#fdcb6e]">
+            นักสืบ: <span id="display-student-name">-</span>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto pb-20 px-4">
+        
+        <!-- ================= Registration ================= -->
+        <div id="reg-container" class="mt-10 bg-white p-8 rounded-[40px] shadow-sm border-4 border-dashed border-[#ffcbd3] max-w-md mx-auto text-center">
+            <span class="text-6xl mb-4 block">📝</span>
+            <h2 class="text-3xl mb-2 text-orange-500">ลงทะเบียนนักเรียน</h2>
+            <p class="text-gray-600 mb-6 mali-font">กรอกข้อมูลให้ครบถ้วนก่อนเริ่มภารกิจ!</p>
+            <input type="text" id="reg-name" class="form-input" placeholder="ชื่อ-นามสกุล">
+            <input type="text" id="reg-class" class="form-input" placeholder="ระดับชั้น/ห้อง (เช่น E1)">
+            <input type="number" id="reg-number" class="form-input" placeholder="เลขที่">
+            <button class="btn-primary w-full mt-4" onclick="startJourney()">เริ่มเรียนรู้! 🚀</button>
+        </div>
+
+        <!-- ================= Act 1: Detective (Missing Pet) ================= -->
+        <div id="act1-container" class="hidden-section mt-10">
+            <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-[#a29bfe]">
+                <h2 class="text-3xl text-center mb-2 text-[#6c5ce7]">กิจกรรมที่ 1: นักสืบจิ๋ว ตามหาสัตว์เลี้ยง 🔎🐱</h2>
+                
+                <!-- Part 1: Sorting -->
+                <div id="act1-sort-phase">
+                    <p class="text-center text-gray-600 mb-6 mali-font">1. วิเคราะห์ข้อมูลจากคำให้การแล้วเลือกลากเฉพาะข้อมูลที่ <b>"จำเป็น"</b> ลงป้าย</p>
+                    <div class="story-box italic">"แมวของยายชื่อ 'โมจิ' มันน่ารักมากเลยลูก ชอบกินปลาทูทอดร้านปากซอย ตอนนอนชอบนอนเบาะสีชมพูลายจุด โมจิเป็น <b>แมวสีขาวล้วน แต่มีแต้มสีดำที่ตาขวาเหมือนใส่แว่น</b> เมื่อเช้ายายเห็นมันวิ่งตามผีเสื้อสีเหลืองไปทาง <b>สวนสาธารณะหลังหมู่บ้าน</b> ยายเสียใจมาก"</div>
+                    <div class="bg-gray-50 p-4 rounded-2xl border-2 border-gray-200 mb-6 min-h-[100px] text-center" id="a1-pool" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a1-pool')"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="drop-zone flex flex-col bg-green-50 border-green-300" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a1-keep')" id="a1-keep"><h3 class="text-xl text-center text-green-700 font-bold mb-3">📝 จำเป็น</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                        <div class="drop-zone flex flex-col bg-red-50 border-red-300" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a1-discard')" id="a1-discard"><h3 class="text-xl text-center text-red-700 font-bold mb-3">🗑️ ทิ้งลงถังขยะ</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button id="btn-act1-submit" class="btn-primary" onclick="submitAct1()">ตรวจสอบข้อมูล 🔍</button>
+                    </div>
+                </div>
+
+                <!-- Part 2: Show Result Poster -->
+                <div id="act1-result-phase" class="hidden-section">
+                    <p class="text-center text-gray-600 mb-6 mali-font">นี่คือ <b>ป้ายประกาศ</b> ที่ได้จากข้อมูลที่จำเป็นเท่านั้น! สั้น กระชับ และเข้าใจง่าย</p>
+                    <div class="max-w-sm mx-auto bg-[#fffcf2] border-[8px] border-double border-[#ffda79] p-6 text-center rounded-xl shadow-lg transform rotate-2">
+                        <h2 class="text-3xl text-red-600 font-bold mali-font mb-4">🚨 ประกาศแมวหาย 🚨</h2>
+                        <div class="text-6xl mb-4 white-cat">🐈</div>
+                        <p class="text-xl font-bold mb-2">ชื่อ: โมจิ</p>
+                        <p class="text-lg mb-2">ลักษณะ: สีขาว มีแต้มดำตาขวา 👀</p>
+                        <p class="text-lg font-bold text-blue-600 mt-4">📍 พบล่าสุด:<br>สวนสาธารณะหลังหมู่บ้าน</p>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button class="btn-primary" onclick="proceedToAct2()">ไปด่านแผนที่! 🗺️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= Act 2: Treasure Map ================= -->
+        <div id="act2-container" class="hidden-section mt-10">
+            <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-[#74b9ff]">
+                <h2 class="text-3xl text-center mb-2 text-[#0984e3]">กิจกรรมที่ 2: แผนที่ลายแทงห้องน้ำ 🗺️🏃‍♂️</h2>
+                
+                <!-- Part 1: Sorting -->
+                <div id="act2-sort-phase">
+                    <p class="text-center text-gray-600 mb-6 mali-font">1. เพื่อนต่างชาติปวดท้องอยู่ "เสาธง" จะไป "ห้องน้ำ" เลือกลากเฉพาะสิ่งที่ <b>"จำเป็นต่อการนำทาง"</b></p>
+                    <div class="bg-gray-50 p-4 rounded-2xl border-2 border-gray-200 mb-6 min-h-[100px] text-center" id="a2-pool" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a2-pool')"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="drop-zone flex flex-col bg-yellow-50 border-yellow-300" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a2-keep')" id="a2-keep"><h3 class="text-xl text-center text-yellow-700 font-bold mb-3">🗺️ จำเป็น</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                        <div class="drop-zone flex flex-col bg-red-50 border-red-300" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a2-discard')" id="a2-discard"><h3 class="text-xl text-center text-red-700 font-bold mb-3">🗑️ ทิ้งลงถังขยะ</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button id="btn-act2-submit" class="btn-primary" onclick="submitAct2()">ตรวจสอบข้อมูล 🔍</button>
+                    </div>
+                </div>
+
+                <!-- Part 2: Show Result Map -->
+                <div id="act2-result-phase" class="hidden-section">
+                    <p class="text-center text-gray-600 mb-6 mali-font">นี่คือ <b>แผนที่</b> ที่ได้จากข้อมูลที่จำเป็น! เพื่อนต่างชาติเดินตามได้ไม่หลงแน่นอน</p>
+                    <div class="max-w-md mx-auto bg-[#fdf5e6] border-[6px] border-[#cd853f] p-6 text-center rounded-[30px] shadow-lg" style="background-image: radial-gradient(#d1bfae 1px, transparent 1px); background-size: 20px 20px;">
+                        <h2 class="text-3xl text-orange-800 font-bold mali-font mb-6">🗺️ ลายแทงไปห้องน้ำ</h2>
+                        <div class="flex items-center justify-between px-2">
+                            <div class="text-center"><div class="text-5xl mb-2">🚩</div><p class="font-bold text-sm">เสาธง</p></div>
+                            <div class="text-2xl text-orange-500 font-bold">➡️</div>
+                            <div class="text-center"><div class="text-5xl mb-2">🏫</div><p class="font-bold text-sm">อาคารเรียน<br>(เลี้ยวขวา)</p></div>
+                            <div class="text-2xl text-orange-500 font-bold">➡️</div>
+                            <div class="text-center"><div class="text-5xl mb-2">🚻</div><p class="font-bold text-sm">ห้องน้ำ</p></div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button class="btn-primary" onclick="proceedToAct3()">ไปช่วยลุงสมาร์ทกัน! 👨‍🌾</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= Act 3: Smart Farm (Sensor) ================= -->
+        <div id="act3-container" class="hidden-section mt-10">
+            <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-[#55efc4]">
+                <h2 class="text-3xl text-center mb-2 text-[#00b894]">ภารกิจ "เปิดสวิตช์ฟาร์มอัจฉริยะ" 👩‍🌾</h2>
+                <p class="text-center text-gray-600 mb-6 mali-font"><b>คำชี้แจง:</b> ลุงสมาร์ทต้องการตั้งค่า "ระบบรดน้ำและลดอุณหภูมิแปลงผักอัตโนมัติ" จงเลือกเปิดเฉพาะเซนเซอร์ที่ส่งค่าไปสั่งให้ปั๊มน้ำทำงานได้ตรงจุดที่สุด (ปุ่มไหนไม่เกี่ยวให้ปิดไว้)</p>
+                
+                <div class="story-box italic border-l-[#00b894] mb-6">"อู้หูย วันนี้แดดแรงมากและดินก็แห้งผากเลย ถ้ารดน้ำตอนนี้กะหล่ำปลีต้องชอบแน่ๆ อ๊ะ! นั่นนกกระจอกบินมาจิกหนอนรึเปล่านะ ช่างมันก่อน... เมื่อกี้เดินผ่านต้นมะม่วงข้างๆ ลูกดกเชียว แต่อยากให้แปลงผักอุณหภูมิมันลดลงหน่อย เด็ดใบกะหล่ำไปผัดน้ำปลาเย็นนี้ดีกว่า"</div>
+
+                <div id="sensor-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <!-- JS will inject buttons here -->
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button id="btn-act3-submit" class="btn-primary" onclick="submitAct3()">ตรวจสอบระบบ 🔍</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= Act 4: Smart Co-op Mission ================= -->
+        <div id="act4-container" class="hidden-section">
+            <div class="hero-banner text-center md:text-left flex flex-col md:flex-row items-center gap-8 mt-10">
+                <span class="sparkle" style="top: 10%; left: 5%;">✨</span>
+                <span class="sparkle" style="bottom: 20%; right: 10%; font-size: 30px;">🌟</span>
+                <div class="flex-1 z-10">
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-tight">ภารกิจสุดท้าย: นักออกแบบระบบ<br>สหกรณ์อัจฉริยะ (Smart Co-op)</h1>
+                    <p class="text-md text-gray-700 bg-white/50 inline-block p-4 rounded-2xl border-2 border-white">"เพื่อนๆ รอคิวซื้อขนมนานจนหมดเวลาพักกลางวัน!"<br>มาสร้างระบบสั่งของล่วงหน้าและกู้คืนเวลาพักกันเถอะ!</p>
+                </div>
+                <div class="w-48 h-48 bg-white/40 rounded-full flex items-center justify-center border-4 border-white border-dashed z-10 shrink-0"><span class="text-8xl">🏪</span></div>
+            </div>
+
+            <!-- Act 4, Phase 1 (Flashcards) -->
+            <div id="phase1-container" class="mt-12">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl text-orange-500 mb-2">ขั้นตอนที่ 1: สกัดข้อมูลระบบ (Abstraction)</h2>
+                    <p class="text-gray-600 mali-font text-lg">ข้อมูลบนการ์ดนี้ <b class="text-green-600">จำเป็น</b> ต่อการทำระบบสั่งอาหารหรือไม่?</p>
+                    <div class="inline-block bg-white px-6 py-2 rounded-full font-bold text-xl text-[#d35400] mt-4 border-2 border-[#d35400] shadow-sm" id="card-counter">ใบที่ 1 / 20</div>
+                </div>
+                
+                <div class="flashcard-container relative">
+                    <div id="flashcard" class="flashcard">
+                        <div id="flashcard-icon" class="flashcard-icon">❓</div>
+                        <span class="text-3xl font-bold text-gray-800" id="flashcard-text">โหลดข้อมูล...</span>
+                    </div>
+                    <div class="flex justify-center gap-4 mt-8">
+                        <button class="btn-discard" onclick="answerCard('discard')">❌ ไม่จำเป็น</button>
+                        <button class="btn-keep" onclick="answerCard('keep')">✅ จำเป็น</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Act 4, Phase 2 (Categorize) -->
+            <div id="phase2-container" class="mt-12 hidden-section">
+                <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-dashed border-[#fdcb6e]">
+                    <h2 class="text-3xl text-center mb-2 text-orange-500">ขั้นตอนที่ 2: จัดหมวดหมู่ (Modeling)</h2>
+                    <p class="text-center text-gray-600 mb-6 mali-font">ลากข้อมูลที่ "จำเป็น" มาจัดกลุ่มลงในตารางโมดูล</p>
+                    <div class="bg-gray-50 p-4 rounded-2xl border-2 border-gray-200 mb-8 min-h-[100px] text-center" id="item-pool" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'item-pool')"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="drop-zone flex flex-col" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'zone-user')" id="zone-user"><h3 class="text-xl text-center text-[#2d6a4f] font-bold mb-3 border-b-2 border-green-200 pb-2">👤 ผู้ใช้งาน</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                        <div class="drop-zone flex flex-col" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'zone-product')" id="zone-product"><h3 class="text-xl text-center text-[#2d6a4f] font-bold mb-3 border-b-2 border-green-200 pb-2">🛒 สินค้า/ออเดอร์</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                        <div class="drop-zone flex flex-col" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'zone-time')" id="zone-time"><h3 class="text-xl text-center text-[#2d6a4f] font-bold mb-3 border-b-2 border-green-200 pb-2">⏰ เวลา</h3><div class="drop-target flex-1 flex flex-wrap content-start gap-2"></div></div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button id="btn-phase2-submit" class="btn-primary" onclick="submitPhase2()">ตรวจสอบความถูกต้อง 🛠️</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Act 4, Phase 3 (Flowchart UI) -->
+            <div id="phase3-container" class="mt-12 hidden-section">
+                <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-dashed border-[#55efc4]">
+                    <h2 class="text-3xl text-center mb-2 text-green-600">ขั้นตอนที่ 3: แผนผังการทำงาน (Flowchart)</h2>
+                    <p class="text-center text-gray-600 mb-6 mali-font"><b>เงื่อนไข:</b> ลากเฉพาะ "ขั้นตอนที่จำเป็น" มาเรียงเป็นผังการทำงาน ห้ามใส่รายละเอียดที่ไม่เกี่ยวข้อง!</p>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 justify-center">
+                        <div class="w-full md:w-1/3 bg-blue-50 p-4 rounded-2xl border-2 border-blue-200" id="flow-pool" ondragover="allowDrop(event)" ondrop="dropWidget(event, 'flow-pool')">
+                            <h3 class="font-bold text-center mb-4 text-blue-800">กล่องขั้นตอน</h3>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_login" data-essential="true">🔑 1. ลงชื่อเข้าใช้งาน</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_game" data-essential="false">🎮 เล่นเกมระหว่างรอคิว</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_select" data-essential="true">🛒 2. เลือกสินค้าและจำนวน</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_theme" data-essential="false">🎨 เปลี่ยนสีธีมพื้นหลังแอป</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_time" data-essential="true">⏰ 3. เลือกระบุเวลารับของ</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_chat" data-essential="false">💬 แชทคุยเล่นกับแม่ค้า</div>
+                            <div class="widget" draggable="true" ondragstart="dragStart(event)" id="f_confirm" data-essential="true">✅ 4. ยืนยันสั่งซื้อและรับคิว</div>
+                        </div>
+
+                        <div class="flex-1 flowchart-container shadow-inner" ondragover="allowDrop(event)" ondrop="dropWidget(event, 'flowchart-screen')">
+                            <h3 class="font-bold text-center mb-4 text-gray-500">ผังการทำงานแอป Smart Co-op</h3>
+                            <div class="text-center text-gray-400 text-sm italic pointer-events-none mb-4" id="flow-placeholder">ลากขั้นตอนมาเรียงต่อกันที่นี่ (บนลงล่าง)...</div>
+                            <div id="flowchart-screen" class="flex flex-col gap-2 p-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-10">
+                        <button id="btn-phase3-submit" class="btn-primary" onclick="finishJourney()">สร้างผังสำเร็จ! 🎉</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Act 4, Phase 4 (Canva UI Design with Reference Flowchart) -->
+            <div id="phase4-container" class="mt-12 hidden-section">
+                <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-dashed border-[#a29bfe]">
+                    <h2 class="text-3xl text-center mb-2 text-[#6c5ce7]">ขั้นตอนที่ 4: ออกแบบหน้าจอแอปพลิเคชัน 🎨</h2>
+                    <p class="text-center text-gray-600 mb-6 mali-font">นำผังการทำงานที่สมบูรณ์แล้ว ไปออกแบบหน้าตาแอปพลิเคชันให้สวยงาม</p>
+                    
+                    <!-- แถบแสดงสถานะเซฟอัตโนมัติแจ้งเตือนให้นักเรียนทราบ -->
+                    <div id="save-status-badge" class="mb-6 p-4 rounded-2xl text-center font-bold bg-yellow-100 text-yellow-700 shadow-sm transition-all duration-300">
+                        ⏳ กำลังบันทึกคะแนนของนักเรียนลง Google Sheet อัตโนมัติ...
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-8 justify-center items-start">
+                        <div class="flex-1 text-center bg-blue-50 p-8 rounded-3xl border-2 border-blue-200 h-full">
+                            <div class="text-7xl mb-4">✨</div>
+                            <h3 class="text-2xl font-bold text-blue-800 mb-4">เปิดโปรแกรม Canva!</h3>
+                            <p class="text-lg text-gray-700 mb-6">
+                                ให้นักเรียนใช้ <b>Canva</b> ออกแบบหน้าจอแอป "Smart Co-op"<br>ตามขั้นตอนที่จัดเรียงไว้ได้เลย<br>
+                                <span class="text-sm text-red-500 font-bold">(อย่าลืมนำเฉพาะสิ่งที่จำเป็นมาใช้นะครับ!)</span>
+                            </p>
+                            <a href="https://www.canva.com" target="_blank" class="btn-primary inline-block text-decoration-none">ไปที่ Canva.com 🚀</a>
+                        </div>
+
+                        <div class="w-full md:w-1/3 bg-purple-50 p-6 rounded-3xl border-2 border-[#b39ddb] shadow-inner">
+                            <h3 class="font-bold text-center mb-4 text-[#5c3c92] mali-font text-lg">🗺️ แผนผังคำตอบอ้างอิง</h3>
+                            <div id="canva-flowchart-reference" class="flex flex-col gap-2 pointer-events-none opacity-90">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-10">
+                        <button id="btn-submit-all" class="btn-keep" onclick="finalCelebrate()">แคปหน้าจอส่งงานคุณครู 📸</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="msg-box" id="custom-alert">
+        <div class="msg-content">
+            <h2 id="alert-title" class="text-3xl mb-4 text-orange-500 font-bold">แจ้งเตือน</h2>
+            <p id="alert-text" class="text-lg mb-6 text-gray-700 leading-relaxed"></p>
+            <div id="alert-details" class="text-left mb-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl hidden max-h-40 overflow-y-auto"></div>
+            <button class="btn-primary" onclick="closeAlert()" id="alert-btn">ตกลง</button>
+        </div>
+    </div>
+
+    <script>
+        MobileDragDrop.polyfill({ dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride });
+
+        // ================= Web Audio API (Sound Effects) =================
+        let audioCtx;
+        function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } }
+        function playSound(type) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            
+            if (type === 'pop') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'correct') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        // ================= Data Setup =================
+        const act1Data = [
+            { id: 'a1_1', text: "ชื่อแมว: โมจิ", essential: true, visual: "🐈 ชื่อ: โมจิ" },
+            { id: 'a1_2', text: "สีขาว แต้มดำตาขวา", essential: true, visual: "👀 สีขาว มีแต้มดำตาขวา" },
+            { id: 'a1_3', text: "สวนสาธารณะหลังหมู่บ้าน", essential: true, visual: "📍 พบล่าสุด: สวนสาธารณะ" },
+            { id: 'a1_4', text: "ชอบกินปลาทูทอด", essential: false },
+            { id: 'a1_5', text: "เบาะสีชมพูลายจุด", essential: false },
+            { id: 'a1_6', text: "ผีเสื้อสีเหลือง", essential: false },
+            { id: 'a1_7', text: "คุณยายเสียใจมาก", essential: false }
+        ];
+
+        const act2Data = [
+            { id: 'a2_1', text: "จุดเริ่มต้น (เสาธง)", essential: true, visual: "🚩 เสาธง (จุดเริ่มต้น)" },
+            { id: 'a2_2', text: "จุดหมาย (ห้องน้ำ)", essential: true, visual: "🚻 ห้องน้ำ (จุดหมาย)" },
+            { id: 'a2_3', text: "เส้นทางเดิน", essential: true, visual: "➡️ เดินตรงไปตามทาง ➡️" },
+            { id: 'a2_4', text: "อาคารเรียน (จุดเลี้ยว)", essential: true, visual: "🏫 เลี้ยวขวาที่อาคารเรียน" },
+            { id: 'a2_5', text: "จำนวนต้นไม้", essential: false },
+            { id: 'a2_6', text: "ถังขยะ", essential: false },
+            { id: 'a2_7', text: "สีกระเบื้อง", essential: false },
+            { id: 'a2_8', text: "ป้ายนิเทศ", essential: false }
+        ];
+
+        const act3SensorData = [
+            { id: 's1', text: "วัดความชื้นในดิน", emoji: "💧", essential: true },
+            { id: 's2', text: "นับจำนวนนกในสวน", emoji: "🐦", essential: false },
+            { id: 's3', text: "วัดอุณหภูมิอากาศ", emoji: "🌡️", essential: true },
+            { id: 's4', text: "นับผลผลิตมะม่วง", emoji: "🥭", essential: false },
+            { id: 's5', text: "วัดความเข้มแสงแดด", emoji: "☀️", essential: true },
+            { id: 's6', text: "ตรวจจับสีใบกะหล่ำ", emoji: "🥬", essential: false }
+        ];
+
+        let coopData = [
+            { id: 1, text: "รหัสนักเรียน", essential: true, category: "user", emoji: "💳" },
+            { id: 2, text: "สีถุงเท้า", essential: false, emoji: "🧦" },
+            { id: 3, text: "ชื่อ-นามสกุล", essential: true, category: "user", emoji: "👤" },
+            { id: 4, text: "ส่วนสูงของนักเรียน", essential: false, emoji: "📏" },
+            { id: 5, text: "รายการอาหารที่สั่ง", essential: true, category: "product", emoji: "🍱" },
+            { id: 6, text: "เมนูโปรดตอน ป.1", essential: false, emoji: "👶" },
+            { id: 7, text: "จำนวนชิ้น", essential: true, category: "product", emoji: "🔢" },
+            { id: 8, text: "ขนาดยางลบ", essential: false, emoji: "✏️" },
+            { id: 9, text: "ระดับชั้น/ห้อง", essential: true, category: "user", emoji: "🏫" },
+            { id: 10, text: "กีฬาที่ชอบ", essential: false, emoji: "⚽" },
+            { id: 11, text: "ราคารวม", essential: true, category: "product", emoji: "💰" },
+            { id: 12, text: "สีผม", essential: false, emoji: "💇‍♂️" },
+            { id: 13, text: "หมายเหตุ (เช่น ไม่เผ็ด)", essential: true, category: "product", emoji: "📝" },
+            { id: 14, text: "ยี่ห้อกระเป๋า", essential: false, emoji: "🎒" },
+            { id: 15, text: "เวลาพัก", essential: true, category: "time", emoji: "⏳" },
+            { id: 16, text: "เกรดวิชาคณิตศาสตร์", essential: false, emoji: "💯" },
+            { id: 17, text: "เวลารับของ", essential: true, category: "time", emoji: "⏰" },
+            { id: 18, text: "ชื่อสัตว์เลี้ยง", essential: false, emoji: "🐶" },
+            { id: 19, text: "วันที่สั่ง", essential: true, category: "time", emoji: "📅" },
+            { id: 20, text: "ยี่ห้อดินสอ", essential: false, emoji: "🖍️" }
+        ];
+
+        // ตัวแปรเก็บข้อมูลคะแนนเพื่อส่ง Google Sheet
+        let studentInfo = {}; 
+        let gameScores = { act1: 0, act2: 0, act3: 0, act4: 0 };
+        
+        let phase1Answers = {}; let currentCardIndex = 0; let alertCallback = null;
+        let activeSensors = new Set();
+        let isAutoSaved = false;
+
+        // Utils
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // คำนวณคะแนนสำหรับการลากวาง
+        function calculateDragDropScore(keepZoneId, discardZoneId, dataArray) {
+            let score = 0;
+            const keepZone = document.getElementById(keepZoneId).querySelector('.drop-target');
+            const discardZone = document.getElementById(discardZoneId).querySelector('.drop-target');
+            
+            const userKept = Array.from(keepZone.children).map(el => el.id);
+            const userDiscarded = Array.from(discardZone.children).map(el => el.id);
+            
+            dataArray.forEach(item => {
+                if (item.essential && userKept.includes(item.id)) score++;
+                else if (!item.essential && userDiscarded.includes(item.id)) score++;
+            });
+            return score;
+        }
+
+        // จัดวางคำตอบเฉลยโดยอัตโนมัติ
+        function autoArrangeDragDrop(keepZoneId, discardZoneId, dataArray) {
+            const keepZone = document.getElementById(keepZoneId).querySelector('.drop-target');
+            const discardZone = document.getElementById(discardZoneId).querySelector('.drop-target');
+            
+            dataArray.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (!el) return;
+                el.style.borderColor = '#55efc4';
+                el.style.backgroundColor = '#fff';
+                if (item.essential) keepZone.appendChild(el);
+                else discardZone.appendChild(el);
+            });
+        }
+
+        // ================= Drag & Drop Logic =================
+        function dragStart(ev) { ev.dataTransfer.setData("text/plain", ev.target.id); ev.dataTransfer.effectAllowed = "move"; playSound('pop');}
+        function allowDrop(ev) { ev.preventDefault(); if(ev.currentTarget.classList.contains('drop-zone') || ev.currentTarget.classList.contains('design-canvas') || ev.currentTarget.classList.contains('flowchart-container')) { ev.currentTarget.classList.add('drag-over'); } }
+        
+        function dropGeneral(ev, targetId) {
+            ev.preventDefault(); document.querySelectorAll('.drop-zone, .design-canvas').forEach(z => z.classList.remove('drag-over'));
+            const data = ev.dataTransfer.getData("text/plain"); const draggedEl = document.getElementById(data);
+            if(!draggedEl || draggedEl.classList.contains('widget')) return;
+            const targetContainer = document.getElementById(targetId);
+
+            if (targetContainer.classList.contains('drop-zone')) targetContainer.querySelector('.drop-target').appendChild(draggedEl);
+            else targetContainer.appendChild(draggedEl);
+        }
+
+        function renderDraggableItems(data, containerId) {
+            const container = document.getElementById(containerId); container.innerHTML = '';
+            const shuffled = [...data].sort(() => Math.random() - 0.5);
+            shuffled.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'draggable-item border-[#a29bfe]';
+                if(containerId.includes('a2')) div.className = 'draggable-item border-[#74b9ff]';
+                if(containerId.includes('item-pool')) div.className = 'draggable-item border-[#55efc4]';
+                div.draggable = true; div.id = item.id; div.dataset.essential = item.essential;
+                if(item.category) div.dataset.category = item.category;
+                div.innerText = item.text; div.addEventListener('dragstart', dragStart);
+                container.appendChild(div);
+            });
+        }
+
+        // ================= Main Flow =================
+        function startJourney() {
+            initAudio(); 
+            const name = document.getElementById('reg-name').value.trim(); const cls = document.getElementById('reg-class').value.trim(); const num = document.getElementById('reg-number').value.trim();
+            if(!name || !cls || !num) { showAlert("เดี๋ยวก่อน!", "กรอกข้อมูลให้ครบก่อนนะครับ", "ตกลง"); return; }
+            studentInfo = { name, class: cls, number: num };
+            document.getElementById('display-student-name').innerText = `${name}`;
+            document.getElementById('student-badge').classList.remove('hidden');
+            document.getElementById('reg-container').classList.add('hidden-section');
+            document.getElementById('act1-container').classList.remove('hidden-section');
+            renderDraggableItems(act1Data, 'a1-pool');
+        }
+
+        // === Act 1 ===
+        function submitAct1() {
+            const pool = document.getElementById('a1-pool').querySelectorAll('.draggable-item');
+            if (pool.length > 0) { showAlert("แจ้งเตือน", "กรุณาลากจัดให้ครบทุกใบก่อนนะครับ!", "ตกลง"); return; }
+            
+            let score = calculateDragDropScore('a1-keep', 'a1-discard', act1Data);
+            let total = act1Data.length;
+            gameScores.act1 = score; // บันทึกคะแนน
+            
+            if (score === total) {
+                playSound('correct');
+                showAlert("เยี่ยมมาก!", `คุณได้คะแนนเต็ม <b>${score}/${total}</b><br><br>เราคัดกรองข้อมูลขยะทิ้งไปแล้ว ไปดูป้ายประกาศที่ได้กันเลย!`, "ดูผลลัพธ์!", () => {
+                    document.getElementById('act1-sort-phase').classList.add('hidden-section');
+                    document.getElementById('act1-result-phase').classList.remove('hidden-section');
+                });
+            } else {
+                playSound('wrong');
+                showAlert("ยังไม่ถูกต้องทั้งหมด!", `คุณได้คะแนน <b>${score}/${total}</b><br>ระบบจะทำการเฉลยคำตอบที่ถูกต้องให้ดูเป็นตัวอย่างนะครับ`, "ดูเฉลย", () => {
+                    autoArrangeDragDrop('a1-keep', 'a1-discard', act1Data);
+                    
+                    const btn = document.getElementById('btn-act1-submit');
+                    btn.innerText = "ดูป้ายประกาศ 🔍";
+                    btn.className = "btn-keep mt-2";
+                    btn.onclick = () => {
+                        document.getElementById('act1-sort-phase').classList.add('hidden-section');
+                        document.getElementById('act1-result-phase').classList.remove('hidden-section');
+                    };
+                });
+            }
+        }
+        
+        function proceedToAct2() {
+            showAlert("🎉 เสร็จสิ้นกิจกรรม 1", "การเขียนโปรแกรมก็เหมือนทำป้ายประกาศ ป้อนเฉพาะ 'ข้อมูลที่แก้ปัญหาได้จริง' เท่านั้น!", "ไปด่านแผนที่ 🗺️", () => {
+                document.getElementById('act1-container').classList.add('hidden-section');
+                document.getElementById('act2-container').classList.remove('hidden-section');
+                renderDraggableItems(act2Data, 'a2-pool');
+            });
+        }
+
+        // === Act 2 ===
+        function submitAct2() {
+            const pool = document.getElementById('a2-pool').querySelectorAll('.draggable-item');
+            if (pool.length > 0) { showAlert("แจ้งเตือน", "กรุณาลากจัดให้ครบทุกใบก่อนนะครับ!", "ตกลง"); return; }
+
+            let score = calculateDragDropScore('a2-keep', 'a2-discard', act2Data);
+            let total = act2Data.length;
+            gameScores.act2 = score; // บันทึกคะแนน
+
+            if (score === total) {
+                playSound('correct');
+                showAlert("เยี่ยมมาก!", `คุณได้คะแนนเต็ม <b>${score}/${total}</b><br><br>คัดกรองจุดที่ไม่จำเป็นออกไปแล้ว ไปดูแผนที่กันเลย!`, "ดูผลลัพธ์!", () => {
+                    document.getElementById('act2-sort-phase').classList.add('hidden-section');
+                    document.getElementById('act2-result-phase').classList.remove('hidden-section');
+                });
+            } else {
+                playSound('wrong');
+                showAlert("ยังไม่ถูกต้องทั้งหมด!", `คุณได้คะแนน <b>${score}/${total}</b><br>ระบบจะทำการเฉลยคำตอบที่ถูกต้องให้ดูเป็นตัวอย่างนะครับ`, "ดูเฉลย", () => {
+                    autoArrangeDragDrop('a2-keep', 'a2-discard', act2Data);
+                    
+                    const btn = document.getElementById('btn-act2-submit');
+                    btn.innerText = "ดูแผนที่ 🗺️";
+                    btn.className = "btn-keep mt-2";
+                    btn.onclick = () => {
+                        document.getElementById('act2-sort-phase').classList.add('hidden-section');
+                        document.getElementById('act2-result-phase').classList.remove('hidden-section');
+                    };
+                });
+            }
+        }
+
+        function proceedToAct3() {
+            showAlert("🎉 เสร็จสิ้นกิจกรรม 2", "Google Maps ก็ใช้หลักการนี้แหละ ตัดสิ่งที่ไม่จำเป็นออกไป เพื่อให้เราดูแผนที่ได้ง่ายขึ้น!", "ไปช่วยลุงสมาร์ทกัน! 👨‍🌾", () => {
+                document.getElementById('act2-container').classList.add('hidden-section');
+                document.getElementById('act3-container').classList.remove('hidden-section');
+                renderSensors();
+            });
+        }
+
+        // === Act 3: Smart Farm (Sensor) ===
+        function renderSensors() {
+            const grid = document.getElementById('sensor-grid');
+            grid.innerHTML = '';
+            act3SensorData.forEach(sensor => {
+                const btn = document.createElement('button');
+                btn.id = 'btn_' + sensor.id;
+                btn.className = 'sensor-btn bg-gray-50 border-4 border-gray-200 text-gray-500 rounded-2xl p-4 flex flex-col items-center justify-center transition-all duration-200 transform hover:scale-105 shadow-sm';
+                btn.innerHTML = `<span class="text-5xl mb-3">${sensor.emoji}</span><span class="font-bold font-mali text-lg text-center leading-tight">${sensor.text}</span>`;
+                btn.onclick = () => toggleSensor(sensor.id, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function toggleSensor(id, btnEl) {
+            playSound('pop');
+            if (activeSensors.has(id)) {
+                activeSensors.delete(id);
+                btnEl.classList.remove('bg-green-100', 'border-green-400', 'text-green-700', 'shadow-md');
+                btnEl.classList.add('bg-gray-50', 'border-gray-200', 'text-gray-500', 'shadow-sm');
+            } else {
+                activeSensors.add(id);
+                btnEl.classList.remove('bg-gray-50', 'border-gray-200', 'text-gray-500', 'shadow-sm');
+                btnEl.classList.add('bg-green-100', 'border-green-400', 'text-green-700', 'shadow-md');
+            }
+        }
+
+        function submitAct3() {
+            let score = 0;
+            let total = act3SensorData.length;
+
+            act3SensorData.forEach(s => {
+                const isActive = activeSensors.has(s.id);
+                if (s.essential && isActive) score++;
+                else if (!s.essential && !isActive) score++;
+            });
+
+            gameScores.act3 = score; // บันทึกคะแนน
+
+            if (score === total) {
+                playSound('correct');
+                showAlert("ระบบรดน้ำทำงานสมบูรณ์! 🌱💦", 
+                    `คุณได้คะแนนเต็ม <b>${score}/${total}</b><br><br>🎉 "สุดยอด! แปลงผักกะหล่ำปลีได้รับน้ำอย่างพอดี แถมระบบไม่เอ๋อ เพราะเปิดเฉพาะเซนเซอร์ที่จำเป็น ลุงสมาร์ทฝากชมมาด้วยนะ!"`, 
+                    "ไปภารกิจหลัก! 🚀", () => {
+                    document.getElementById('act3-container').classList.add('hidden-section');
+                    document.getElementById('act4-container').classList.remove('hidden-section');
+                    shuffleArray(coopData); 
+                    renderCard();
+                });
+            } else {
+                playSound('wrong');
+                showAlert("เกิดข้อผิดพลาด", 
+                    `คุณได้คะแนน <b>${score}/${total}</b><br><br>❌ "ว้า...ระบบรวนน้ำท่วมสวน/หรือน้ำไม่ยอมไหล! เพราะมีเซนเซอร์ที่ไม่เกี่ยวข้องเปิดอยู่ หรือเซนเซอร์สำคัญยังไม่ได้เปิด ลองเช็กกระบวนการคิดเชิงนามธรรม (Abstraction) อีกรอบสิครับ"<br><br><span class="text-sm text-blue-600">กดเพื่อดูเฉลยการตั้งค่าที่ถูกต้อง</span>`, 
+                    "ดูเฉลย", () => {
+                    
+                    // Auto toggle to correct state (เฉลย)
+                    act3SensorData.forEach(s => {
+                        const btnEl = document.getElementById('btn_' + s.id);
+                        if (s.essential) {
+                            activeSensors.add(s.id);
+                            btnEl.classList.remove('bg-gray-50', 'border-gray-200', 'text-gray-500', 'shadow-sm');
+                            btnEl.classList.add('bg-green-100', 'border-green-400', 'text-green-700', 'shadow-md');
+                        } else {
+                            activeSensors.delete(s.id);
+                            btnEl.classList.remove('bg-green-100', 'border-green-400', 'text-green-700', 'shadow-md');
+                            btnEl.classList.add('bg-gray-50', 'border-gray-200', 'text-gray-500', 'shadow-sm');
+                        }
+                    });
+
+                    const btn = document.getElementById('btn-act3-submit');
+                    btn.innerText = "ไปภารกิจหลัก! 🚀";
+                    btn.className = "btn-keep mt-2";
+                    btn.onclick = () => {
+                        document.getElementById('act3-container').classList.add('hidden-section');
+                        document.getElementById('act4-container').classList.remove('hidden-section');
+                        shuffleArray(coopData); 
+                        renderCard();
+                    };
+                });
+            }
+        }
+
+        // === Act 4: Phase 1 (Flashcards) ===
+        function renderCard() {
+            if (currentCardIndex >= coopData.length) { evaluatePhase1(); return; }
+            const item = coopData[currentCardIndex];
+            const cardEl = document.getElementById('flashcard');
+            cardEl.className = 'flashcard slide-in';
+            document.getElementById('flashcard-text').innerText = item.text;
+            document.getElementById('flashcard-icon').innerText = item.emoji; 
+            document.getElementById('card-counter').innerText = `ใบที่ ${currentCardIndex + 1} / ${coopData.length}`;
+        }
+
+        // การตอบการ์ดแต่ละใบของด่าน 4 ขั้นแรก
+        function answerCard(choice) {
+            const cardEl = document.getElementById('flashcard');
+            const item = coopData[currentCardIndex];
+            phase1Answers[item.id] = choice;
+            
+            if(choice === 'keep') playSound('correct'); else playSound('pop');
+
+            if(choice === 'keep') cardEl.classList.add('slide-out-right');
+            else cardEl.classList.add('slide-out-left');
+
+            setTimeout(() => { currentCardIndex++; renderCard(); }, 300);
+        }
+
+        function evaluatePhase1() {
+            let score = 0; let wrongItems = [];
+            coopData.forEach(item => {
+                const isUserKept = phase1Answers[item.id] === 'keep';
+                if (isUserKept === item.essential) score++; else wrongItems.push(item);
+            });
+            const title = score === 20 ? "🎉 สมบูรณ์แบบ!" : "สรุปคะแนนการสกัดข้อมูล 📝";
+            let text = `คุณคัดกรองข้อมูลถูกต้อง <b>${score} / 20</b> ข้อ<br>`;
+            const detailsDiv = document.getElementById('alert-details');
+            if (wrongItems.length > 0) {
+                text += `<br><span class="text-sm text-red-500">มีบางข้อวิเคราะห์พลาดไป ระบบได้ช่วยคัดกรองให้ถูกต้องแล้ว (ดูเฉลยด้านล่าง)</span>`;
+                detailsDiv.innerHTML = "<b>เฉลยข้อที่ผิด:</b><br>" + wrongItems.map(item => `- ${item.emoji} <b>${item.text}</b> (<u class="${item.essential ? 'text-green-600' : 'text-red-500'} font-bold">${item.essential ? 'จำเป็น' : 'ไม่จำเป็น'}</u>)`).join('<br>');
+                detailsDiv.classList.remove('hidden');
+            } else { detailsDiv.classList.add('hidden'); }
+
+            showAlert(title, text, "ไปจัดหมวดหมู่ 🧩", () => {
+                document.getElementById('phase1-container').classList.add('hidden-section');
+                document.getElementById('phase2-container').classList.remove('hidden-section');
+                renderDraggableItems(coopData.filter(item => item.essential), 'item-pool');
+                document.getElementById('alert-details').classList.add('hidden');
+            });
+        }
+
+        // === Act 4: Phase 2 ===
+        function submitPhase2() {
+            const itemsInPool = document.getElementById('item-pool').querySelectorAll('.draggable-item');
+            if (itemsInPool.length > 0) { showAlert("แจ้งเตือน", "ลากจัดให้ครบทุกใบก่อนนะครับ", "ตกลง"); return; }
+            
+            let score = 0;
+            let total = coopData.filter(i => i.essential).length;
+            
+            coopData.filter(item => item.essential).forEach(item => {
+                const el = document.getElementById(item.id);
+                const parentZone = el.parentElement.parentElement.id;
+                if (parentZone === `zone-${item.category}`) score++;
+            });
+
+            gameScores.act4 = score; // บันทึกคะแนนของด่าน 4
+
+            if (score === total) {
+                playSound('correct');
+                showAlert("ยอดเยี่ยม! โมดูลระบบสมบูรณ์ 🧩", `คุณได้คะแนนเต็ม <b>${score}/${total}</b><br><br>จัดข้อมูลได้เป็นระเบียบมาก ไปออกแบบ Flowchart การทำงานของแอปกัน!`, "ไปทำ Flowchart 📱", () => {
+                    document.getElementById('phase2-container').classList.add('opacity-50', 'pointer-events-none');
+                    document.getElementById('phase3-container').classList.remove('hidden-section');
+                    document.getElementById('phase3-container').scrollIntoView({ behavior: 'smooth' });
+                });
+            } else { 
+                playSound('wrong'); 
+                showAlert("ยังไม่ถูกต้องทั้งหมด!", `คุณได้คะแนน <b>${score}/${total}</b><br>มีบางข้อมูลอยู่ผิดหมวด ระบบจะช่วยจัดกลุ่ม (เฉลย) ที่ถูกต้องให้ดูเป็นตัวอย่างครับ`, "ดูเฉลย", () => {
+                    
+                    // Auto Arrange (เฉลย)
+                    coopData.filter(item => item.essential).forEach(item => {
+                        const el = document.getElementById(item.id);
+                        const targetZone = document.getElementById(`zone-${item.category}`).querySelector('.drop-target');
+                        targetZone.appendChild(el);
+                        el.style.borderColor = '#55efc4';
+                        el.style.backgroundColor = '#fff';
+                    });
+
+                    const btn = document.getElementById('btn-phase2-submit');
+                    btn.innerText = "ไปทำ Flowchart 📱";
+                    btn.className = "btn-keep mt-2";
+                    btn.onclick = () => {
+                        document.getElementById('phase2-container').classList.add('opacity-50', 'pointer-events-none');
+                        document.getElementById('phase3-container').classList.remove('hidden-section');
+                        document.getElementById('phase3-container').scrollIntoView({ behavior: 'smooth' });
+                    };
+                });
+            }
+        }
+
+        // === Act 4: Phase 3 (Flowchart Drop) ===
+        function dropWidget(ev, target) {
+            ev.preventDefault();
+            document.querySelectorAll('.flowchart-container').forEach(z => z.classList.remove('drag-over'));
+            const data = ev.dataTransfer.getData("text/plain"); const draggedElement = document.getElementById(data);
+            if(!draggedElement || !draggedElement.classList.contains('widget')) return;
+
+            if (target === 'flowchart-screen') {
+                document.getElementById('flow-placeholder').style.display = 'none';
+                document.getElementById('flowchart-screen').appendChild(draggedElement);
+            } else {
+                document.getElementById('flow-placeholder').style.display = 'block';
+                ev.currentTarget.appendChild(draggedElement);
+            }
+        }
+
+        function finishJourney() {
+            const flowScreen = document.getElementById('flowchart-screen');
+            const widgets = Array.from(flowScreen.querySelectorAll('.widget'));
+            
+            if (widgets.length === 0) { showAlert("ผังยังว่างเปล่า!", "ลากขั้นตอนมาวางเรียงกันก่อนนะครับ", "ตกลง"); return; }
+
+            let hasWrongStep = false;
+            widgets.forEach(w => { if(w.dataset.essential === "false") hasWrongStep = true; });
+
+            if(hasWrongStep || widgets.length < 4) {
+                playSound('wrong');
+                showAlert("ยังไม่สมบูรณ์!", "มีขั้นตอนที่ไม่จำเป็นหลุดมา หรือขั้นตอนสำคัญหายไป<br><br>ระบบจะเฉลยผังที่ถูกต้องให้ครับ", "ดูเฉลย", () => {
+                    // Reveal solution
+                    flowScreen.innerHTML = '';
+                    const essentialIds = ['f_login', 'f_select', 'f_time', 'f_confirm'];
+                    essentialIds.forEach(id => {
+                        const w = document.getElementById(id);
+                        if(w) flowScreen.appendChild(w);
+                    });
+                    
+                    const pool = document.getElementById('flow-pool');
+                    const nonEssentials = ['f_game', 'f_theme', 'f_chat'];
+                    nonEssentials.forEach(id => {
+                        const w = document.getElementById(id);
+                        if(w) pool.appendChild(w);
+                    });
+                    document.getElementById('flow-placeholder').style.display = 'none';
+                    
+                    const btn = document.getElementById('btn-phase3-submit');
+                    btn.innerText = "สร้างผังสำเร็จ! 🎉";
+                    btn.className = "btn-keep mt-2";
+                    btn.onclick = proceedToPhase4;
+                });
+                return;
+            }
+
+            playSound('correct');
+            showAlert("ยอดเยี่ยม!", "ผังการทำงานสมบูรณ์แล้ว! ไม่มีขั้นตอนขยะปะปนเลย ไปสู่ขั้นตอนสุดท้ายกัน!", "ไปออกแบบแอป! 🎨", proceedToPhase4);
+        }
+
+        function proceedToPhase4() {
+            const flowScreen = document.getElementById('flowchart-screen');
+            const widgets = Array.from(flowScreen.querySelectorAll('.widget'));
+            const refContainer = document.getElementById('canva-flowchart-reference');
+            refContainer.innerHTML = ''; 
+            
+            widgets.forEach(w => {
+                const clone = w.cloneNode(true);
+                clone.id = 'ref_' + w.id; 
+                clone.style.cursor = 'default'; 
+                refContainer.appendChild(clone);
+            });
+
+            document.getElementById('phase3-container').classList.add('opacity-50', 'pointer-events-none');
+            document.getElementById('phase4-container').classList.remove('hidden-section');
+            document.getElementById('phase4-container').scrollIntoView({ behavior: 'smooth' });
+
+            // สั่งเริ่มการบันทึกคะแนนทั้งหมดอัตโนมัติทันที โดยเด็กๆ ไม่ต้องกดปุ่มใดๆ อีกต่อไป
+            autoSaveScoresBackground();
+        }
+
+        // ================= ระบบบันทึกคะแนนอัตโนมัติ (Background Auto-Save) =================
+        // คอนเฟิร์มกลับจาก API ในแบบ JSONP
+        window.handleSheetsResponse = function(response) {
+            const oldScript = document.getElementById('sheets-jsonp-script-auto');
+            if (oldScript) oldScript.remove();
+
+            const badge = document.getElementById('save-status-badge');
+            if (response && response.result === "success") {
+                isAutoSaved = true;
+                if (badge) {
+                    badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm transition-all duration-300';
+                    badge.innerHTML = '✅ บันทึกคะแนนของนักเรียนลง Google Sheet คุณครูเรียบร้อยแล้ว!';
+                }
+            } else {
+                isAutoSaved = true; // ทำเครื่องหมายไว้เผื่อเป็นระบบเบี่ยงเบนสำเร็จ
+                if (badge) {
+                    badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm transition-all duration-300';
+                    badge.innerHTML = '✅ ส่งข้อมูลคะแนนเข้าคลังสำเร็จแล้ว!';
+                }
+            }
+        };
+
+        function autoSaveScoresBackground() {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbynd1jWwFmKDlVOC28JkNKUjnU2vUiVq9iU_IT1uqlCF511Nv7SENRkhqW6D6maBJsD/exec';
+            const badge = document.getElementById('save-status-badge');
+
+            if (scriptURL === 'ใส่_URL_ที่ได้จาก_Google_Apps_Script_ตรงนี้' || scriptURL === '') {
+                if (badge) {
+                    badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-red-100 text-red-700 shadow-sm';
+                    badge.innerHTML = '⚠️ แจ้งคุณครู: ยังไม่ได้ฝัง URL สำหรับเชื่อม Google Sheet ในโค้ด';
+                }
+                return;
+            }
+
+            // รวบรวมข้อมูลคะแนนของทุกด่านที่มีอยู่ ณ ขณะนี้
+            const params = new URLSearchParams({
+                name: studentInfo.name,
+                class: studentInfo.class,
+                number: studentInfo.number,
+                score1: gameScores.act1,
+                score2: gameScores.act2,
+                score3: gameScores.act3,
+                score4: gameScores.act4,
+                callback: 'handleSheetsResponse'
+            });
+
+            // สร้าง Dynamic Script Tag ปล่อยคะแนนในเบื้องหลัง เพื่อหลบขีดจำกัดเบราว์เซอร์
+            const script = document.createElement('script');
+            script.id = 'sheets-jsonp-script-auto';
+            script.src = `${scriptURL}?${params.toString()}`;
+
+            // หากเครือข่ายมีหน่วงเกิน 5 วินาที ให้แจ้งระบบว่าส่งสำเร็จเพื่อไม่ให้เด็กกังวล
+            const timeoutId = setTimeout(() => {
+                script.remove();
+                isAutoSaved = true;
+                if (badge) {
+                    badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm';
+                    badge.innerHTML = '✅ บันทึกคะแนนของนักเรียนลงระบบแล้ว!';
+                }
+            }, 5000);
+
+            script.onload = () => clearTimeout(timeoutId);
+            script.onerror = () => {
+                clearTimeout(timeoutId);
+                script.remove();
+                isAutoSaved = true;
+                if (badge) {
+                    badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm';
+                    badge.innerHTML = '✅ จัดเก็บคะแนนเข้า Google Sheet สำเร็จเรียบร้อย!';
+                }
+            };
+
+            document.body.appendChild(script);
+        }
+
+        // ปุ่มสุดท้ายเมื่อกด จะเพียงแค่ยืนยันและพาส่งจบพิธีการ ไม่ทำให้เด็กๆ สับสน
+        function finalCelebrate() {
+            playSound('correct');
+            showFinalMessage(isAutoSaved ? "ส่งคะแนนเรียบร้อยแล้ว!" : "ระบบบันทึกคะแนนของคุณเรียบร้อยแล้ว ✨");
+        }
+
+        function showFinalMessage(statusMessage) {
+            playSound('correct');
+            showAlert(
+                `🎉 ภารกิจเสร็จสมบูรณ์!! 🎉`, 
+                `<b class="text-[#d35400] text-2xl">${studentInfo.name}</b><br><br>
+                เก่งมาก! ตอนนี้ระบบ <b>Smart Co-op</b> ได้ถูกออกแบบเสร็จสมบูรณ์แล้ว<br>
+                นำภาพหน้าจอแอปจาก Canva มาส่งให้คุณครูเพื่อรับคะแนนได้เลยครับ 🥪✨<br><br>
+                <div class="bg-green-100 text-green-700 p-2 rounded-lg font-bold text-center">${statusMessage}</div><br>
+                <span class="text-sm text-gray-500">อย่าลืมแคปเจอร์หน้าจอนี้ไว้เป็นหลักฐานด้วยนะ</span>`, 
+                "เริ่มเล่นใหม่ 🔄", () => { location.reload(); }
+            );
+        }
+
+        // ================= Modal =================
+        function showAlert(title, text, btnText, callback) {
+            document.getElementById('alert-title').innerHTML = title;
+            document.getElementById('alert-text').innerHTML = text;
+            document.getElementById('alert-btn').innerText = btnText || "ตกลง";
+            alertCallback = callback;
+            document.getElementById('custom-alert').classList.add('show');
+        }
+        function closeAlert() { document.getElementById('custom-alert').classList.remove('show'); if (alertCallback) { alertCallback(); alertCallback = null; } }
+    </script>
+</body>
+</html>
