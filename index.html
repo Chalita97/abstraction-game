@@ -158,7 +158,6 @@
             flex-direction: column;
             overflow: hidden;
             font-size: 0.95rem;
-            margin: 0 auto;
         }
         .phone-screen {
             flex: 1;
@@ -216,7 +215,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex: 1;
+            flex-1;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -358,7 +357,7 @@
                 <span class="sparkle" style="top: 10%; left: 5%;">✨</span>
                 <span class="sparkle" style="bottom: 20%; right: 10%; font-size: 30px;">🌟</span>
                 <div class="flex-1 z-10">
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-tight">ภารกิจ: นักออกแบบระบบ<br>สหกรณ์อัจฉริยะ (Smart Co-op)</h1>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-tight">ภารกิจสุดท้าย: นักออกแบบระบบ<br>สหกรณ์อัจฉริยะ (Smart Co-op)</h1>
                     <p class="text-md text-gray-700 bg-white/50 inline-block p-4 rounded-2xl border-2 border-white">"เพื่อนๆ รอคิวซื้อขนมนานจนหมดเวลาพักกลางวัน!"<br>มาสร้างระบบสั่งของล่วงหน้าและกู้คืนเวลาพักกันเถอะ!</p>
                 </div>
                 <div class="w-48 h-48 bg-white/40 rounded-full flex items-center justify-center border-4 border-white border-dashed z-10 shrink-0"><span class="text-8xl">🏪</span></div>
@@ -432,148 +431,71 @@
                 </div>
             </div>
 
-            <!-- ================= Group Mission Registration ================= -->
-            <div id="group-reg-container" class="mt-12 hidden-section bg-white p-8 md:p-10 rounded-[40px] shadow-sm border-4 border-dashed border-[#74b9ff] max-w-3xl mx-auto text-center">
-                <!-- แถบแสดงสถานะเซฟอัตโนมัติแจ้งเตือนให้นักเรียนทราบ -->
-                <div id="save-status-badge" class="mb-6 p-4 rounded-2xl text-center font-bold bg-yellow-100 text-yellow-700 shadow-sm transition-all duration-300">
-                    ⏳ กำลังบันทึกคะแนนภารกิจเดี่ยวของนักเรียนลง Google Sheet อัตโนมัติ...
-                </div>
-
-                <span class="text-7xl mb-4 block">👥</span>
-                <h2 class="text-3xl md:text-4xl mb-3 text-blue-600 font-bold">เข้าสู่ภารกิจกลุ่ม!</h2>
-                <p class="text-gray-600 mb-8 mali-font text-lg">คะแนนงานเดี่ยวถูกบันทึกแล้ว ให้นักเรียนรวมกลุ่มเดิม แล้วพิมพ์รายละเอียดต่อไปนี้เพื่อเริ่มออกแบบแปลนนวัตกรรมได้เลยครับ</p>
-                
-                <div class="text-left max-w-lg mx-auto bg-blue-50 p-6 rounded-2xl border border-blue-200">
-                    <label class="block text-blue-800 font-bold mb-2 ml-1 text-sm">1. ชื่อกลุ่ม</label>
-                    <input type="text" id="group-name" class="form-input text-md border-[#a29bfe] focus:border-[#6c5ce7] mb-4" placeholder="กรอกชื่อกลุ่มที่นี่...">
-
-                    <label class="block text-blue-800 font-bold mb-2 ml-1 text-sm">2. ปัญหาที่พบในชุมชน/โรงเรียน</label>
-                    <textarea id="group-problem" class="form-input h-20 text-left border-[#a29bfe] focus:border-[#6c5ce7] mb-4" placeholder="ระบุปัญหาที่ต้องการแก้ไข..."></textarea>
-                    
-                    <label class="block text-blue-800 font-bold mb-2 ml-1 text-sm">3. นวัตกรรมที่ใช้แก้ปัญหา</label>
-                    <input type="text" id="group-innovation" class="form-input text-md border-[#a29bfe] focus:border-[#6c5ce7] mb-4" placeholder="ชื่อหรือแนวคิดนวัตกรรม...">
-                    
-                    <label class="block text-blue-800 font-bold mb-2 ml-1 text-sm">4. รายชื่อสมาชิกในกลุ่ม</label>
-                    <textarea id="group-members" class="form-input h-32 text-left border-[#a29bfe] focus:border-[#6c5ce7] leading-relaxed mb-0" placeholder="1. ชื่อ-สกุล เลขที่&#10;2. ชื่อ-สกุล เลขที่&#10;3. ชื่อ-สกุล เลขที่"></textarea>
-                </div>
-                
-                <button class="btn-primary w-full max-w-lg mt-6" onclick="startGroupMission()">ไปดูโจทย์ภารกิจกลุ่ม! 🚀</button>
-            </div>
-
-            <!-- ================= Act 5 (Phase 4): Group Blueprint ================= -->
+            <!-- Act 4, Phase 4 (Canva UI Design with Reference Flowchart & Interactive Mobile Mockup) -->
             <div id="phase4-container" class="mt-12 hidden-section">
-                <div class="bg-white rounded-[40px] p-6 md:p-10 shadow-sm border-4 border-dashed border-[#a29bfe]">
-                    <h2 class="text-3xl md:text-4xl text-center mb-2 text-[#6c5ce7] font-bold">ภารกิจกลุ่ม: ออกแบบแบบแปลนนวัตกรรม 💡</h2>
-                    <p class="text-center text-gray-600 mb-6 mali-font text-lg">นำกระบวนการคิดเชิงนามธรรม (Abstraction) มาใช้ออกแบบนวัตกรรมแก้ปัญหาชุมชน!</p>
+                <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-dashed border-[#a29bfe]">
+                    <h2 class="text-3xl text-center mb-2 text-[#6c5ce7]">ขั้นตอนที่ 4: ออกแบบโปสเตอร์ 🎨</h2>
+                    <p class="text-center text-gray-600 mb-6 mali-font">นำกระบวนการคิดเชิงนามธรรมที่เรียนรู้มาทั้งหมด ไปใช้ประชาสัมพันธ์แอปให้เพื่อน ๆ</p>
                     
-                    <!-- โชว์ปัญหาและนวัตกรรมที่กลุ่มเลือก -->
-                    <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-2xl border border-purple-200 mb-8 shadow-sm">
-                        <p class="text-sm text-gray-700 mb-1"><span class="font-bold text-blue-700">🚨 ปัญหาที่เลือก:</span> <span id="display-group-problem"></span></p>
-                        <p class="text-sm text-gray-700"><span class="font-bold text-green-700">💡 นวัตกรรมที่ใช้แก้:</span> <span id="display-group-innovation"></span></p>
+                    <!-- แถบแสดงสถานะเซฟอัตโนมัติแจ้งเตือนให้นักเรียนทราบ -->
+                    <div id="save-status-badge" class="mb-6 p-4 rounded-2xl text-center font-bold bg-yellow-100 text-yellow-700 shadow-sm transition-all duration-300">
+                        ⏳ กำลังบันทึกคะแนนของนักเรียนลง Google Sheet อัตโนมัติ...
                     </div>
 
-                    <!-- กิจกรรมที่ 1 (Eye-Brain-Hand) -->
-                    <div class="bg-yellow-50 rounded-3xl p-6 md:p-8 border-2 border-yellow-200 mb-10">
-                        <h3 class="text-xl md:text-2xl font-bold text-yellow-800 mb-3 flex items-center gap-2">
-                            <span>🧠</span> กิจกรรมที่ 1: ระดมสมองวิเคราะห์หลักการทำงาน
-                        </h3>
-                        <p class="text-sm md:text-base text-gray-700 mb-6 font-semibold">
-                            นักเรียนร่วมกันระดมสมองและวิเคราะห์หลักการทำงานของนวัตกรรมที่เลือก โดยใช้คำถามเปรียบเทียบ (Eye-Brain-Hand) พิมพ์คำตอบลงในช่องด้านล่างนี้ได้เลย:
-                        </p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-200 flex flex-col">
-                                <div class="text-4xl mb-3 text-center">👀</div>
-                                <strong class="text-blue-700 block mb-2 text-center text-md">คำถามที่ 1: ตา (Sensor)</strong>
-                                <p class="text-xs text-gray-600 leading-relaxed text-center mb-3">
-                                    นวัตกรรมของเราต้องใช้ <b>"ตาดู"</b> หรือ <b>"เซนเซอร์รับค่า"</b> อะไรบ้าง ถึงจะรู้ว่าปัญหากำลังเกิดขึ้น?
-                                </p>
-                                <textarea id="ans-eye" class="w-full flex-1 p-2 border border-blue-200 rounded-lg text-sm outline-none focus:border-blue-500 bg-blue-50/30 min-h-[100px]" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
-                            </div>
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-200 flex flex-col">
-                                <div class="text-4xl mb-3 text-center">🧠</div>
-                                <strong class="text-purple-700 block mb-2 text-center text-md">คำถามที่ 2: สมอง (Process)</strong>
-                                <p class="text-xs text-gray-600 leading-relaxed text-center mb-3">
-                                    พอระบบเห็นหรือรับค่ามาแล้ว <b>"สมอง"</b> ของมันต้องคิด ตัดสินใจ หรือประมวลผลอย่างไร?
-                                </p>
-                                <textarea id="ans-brain" class="w-full flex-1 p-2 border border-purple-200 rounded-lg text-sm outline-none focus:border-purple-500 bg-purple-50/30 min-h-[100px]" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
-                            </div>
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-green-200 flex flex-col">
-                                <div class="text-4xl mb-3 text-center">⚙️</div>
-                                <strong class="text-green-700 block mb-2 text-center text-md">คำถามที่ 3: มือ (Action)</strong>
-                                <p class="text-xs text-gray-600 leading-relaxed text-center mb-3">
-                                    คิดเสร็จแล้ว ต้องสั่งให้ <b>"มือหรือกลไก"</b> ลงมือทำอะไรเพื่อช่วยแก้ปัญหาให้มนุษย์?
-                                </p>
-                                <textarea id="ans-hand" class="w-full flex-1 p-2 border border-green-200 rounded-lg text-sm outline-none focus:border-green-500 bg-green-50/30 min-h-[100px]" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6 bg-red-50 p-4 rounded-xl border border-red-200 text-center shadow-inner mb-6">
-                            <span class="text-red-600 font-bold text-sm">💡 ทบทวนหลักการ Abstraction: </span>
-                            <span class="text-gray-700 text-sm">การคิดข้อมูลทั้ง 3 ส่วนนี้ ต้องเลือกมาเฉพาะ "สิ่งที่จำเป็นจริงๆ" เพื่อไม่ให้ระบบทำงานหนักหรือสับสน!</span>
-                        </div>
-                        
-                        <div class="text-center">
-                            <button class="btn-primary px-8 py-3" onclick="submitGroupAct1()">บันทึกข้อมูลระดมสมอง 💾</button>
-                        </div>
-                    </div>
-
-                    <!-- กิจกรรมที่ 2 (Canva Blueprint) -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 justify-center items-stretch">
                         
-                        <!-- คอลัมน์ที่ 1: โจทย์ Canva Blueprint (lg:col-span-5) -->
-                        <div class="lg:col-span-5 bg-blue-50 p-6 rounded-3xl border-2 border-blue-200 flex flex-col justify-between">
+                        <!-- คอลัมน์ที่ 1: โจทย์คู่มือ Canva & เงื่อนไขการออกแบบโปสเตอร์แบบอ่านง่ายสำหรับเด็ก (lg:col-span-5) -->
+                        <div class="lg:col-span-5 bg-blue-50 p-5 rounded-3xl border-2 border-blue-200 flex flex-col justify-between">
                             <div>
-                                <div class="text-center mb-6">
-                                    <div class="text-5xl mb-2">🎨</div>
-                                    <h3 class="text-xl font-bold text-blue-800">กิจกรรมที่ 2: สร้างแปลน (Blueprint)</h3>
-                                    <p class="text-sm text-gray-600 mt-1">ใช้ Canva ออกแบบโปสเตอร์แบบแปลนนวัตกรรม (1 หน้า)</p>
+                                <div class="text-center mb-4">
+                                    <div class="text-5xl mb-2">📢</div>
+                                    <h3 class="text-xl font-bold text-blue-800">ภารกิจสร้างโปสเตอร์แนะนำแอป</h3>
+                                    <p class="text-xs text-gray-600 mt-1">ใช้ Canva ทำโปสเตอร์ (1 หน้า) ไปแปะหน้าสหกรณ์</p>
                                 </div>
 
-                                <div class="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm text-left mb-4">
-                                    <h4 class="text-sm font-bold text-[#e67e22] mb-4 flex items-center gap-1">
-                                        <span>🎯</span> นำคำตอบมาจัดวางลงใน 4 องค์ประกอบ:
+                                <!-- กล่องเงื่อนไขการสร้างสรรค์ฉบับเป็นมิตรกับเด็ก -->
+                                <div class="bg-white rounded-2xl p-4 border border-blue-100 shadow-sm text-left mb-4">
+                                    <h4 class="text-sm font-bold text-[#e67e22] mb-3 flex items-center gap-1">
+                                        <span>🎯</span> กฎกติกาการทำโปสเตอร์:
                                     </h4>
                                     
-                                    <div class="space-y-4">
-                                        <!-- กล่อง 1 -->
-                                        <div class="bg-blue-50 rounded-xl p-3 border-l-4 border-blue-400">
-                                            <strong class="text-blue-700 text-sm">1. ชื่อระบบ</strong>
-                                            <p class="text-[11px] text-gray-700 mt-1 font-semibold leading-snug">ตั้งชื่อนวัตกรรมให้สอดคล้องกับปัญหาที่แก้ และใส่ชื่อสมาชิกกลุ่ม</p>
+                                    <div class="space-y-3">
+                                        <!-- กฎข้อที่ 1 -->
+                                        <div class="bg-green-50 rounded-xl p-3 border-l-4 border-green-400 shadow-sm">
+                                            <strong class="text-green-700 text-sm">1. 📝 สรุปให้สั้นที่สุด (แค่ 4 ขั้นตอน)</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 leading-snug">ดูจากผังคำตอบทางขวามือ เขียนอธิบายสั้นๆ ให้เพื่อนอ่านปุ๊บ ทำตามแอปได้ปั๊บ!</p>
                                         </div>
                                         
-                                        <!-- กล่อง 2 -->
-                                        <div class="bg-purple-50 rounded-xl p-3 border-l-4 border-purple-400">
-                                            <strong class="text-purple-700 text-sm">2. สิ่งที่ระบบต้องใช้มองเห็น/สัมผัส (ข้อมูลเข้า)</strong>
-                                            <p class="text-[11px] text-gray-700 mt-1 font-semibold leading-snug">เซนเซอร์รับค่าอะไรบ้าง? (พิมพ์เฉพาะสิ่งที่จำเป็น เช่น ภาพถ่ายขวดพลาสติก)</p>
+                                        <!-- กฎข้อที่ 2 -->
+                                        <div class="bg-blue-50 rounded-xl p-3 border-l-4 border-blue-400 shadow-sm">
+                                            <strong class="text-blue-700 text-sm">2. 🎒 บอกสิ่งที่ "ต้องเตรียมตัว"</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 leading-snug">เตือนเพื่อนๆ ว่าก่อนสั่งแอปต้องมีข้อมูลอะไรบ้าง (เช่น <b>รหัสนักเรียน</b> หรือ <b>เมนูในใจ</b>)</p>
                                         </div>
                                         
-                                        <!-- กล่อง 3 -->
-                                        <div class="bg-green-50 rounded-xl p-3 border-l-4 border-green-400">
-                                            <strong class="text-green-700 text-sm">3. วิธีการทำงาน</strong>
-                                            <p class="text-[11px] text-gray-700 mt-1 font-semibold leading-snug">อธิบายกระบวนการคิดและกลไกการทำแอ็คชันให้สั้นที่สุด (ห้ามยาวเกิน 2 บรรทัด)</p>
+                                        <!-- กฎข้อที่ 3 -->
+                                        <div class="bg-yellow-50 rounded-xl p-3 border-l-4 border-yellow-400 shadow-sm">
+                                            <strong class="text-yellow-700 text-sm">3. 🎨 ตกแต่งให้น่ารักโดนใจ</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 leading-snug">ใช้รูปภาพ ไอคอน สีสันให้สวยงาม ใครเดินผ่านหน้าสหกรณ์ก็ต้องหยุดมอง!</p>
                                         </div>
                                         
-                                        <!-- กล่อง 4 -->
-                                        <div class="bg-red-50 rounded-xl p-3 border-l-4 border-red-400">
-                                            <strong class="text-red-700 text-sm">4. ถังขยะข้อมูลที่ไม่เกี่ยวข้องกัน 🗑️</strong>
-                                            <p class="text-[11px] text-red-600 mt-1 font-semibold leading-snug">
-                                                ระบุข้อมูลที่ "ไม่จำเป็น" และถูกคัดทิ้งไป เพื่อแสดงให้ครูเห็นว่ากลุ่มเราเข้าใจหลัก Abstraction
-                                            </p>
+                                        <!-- กฎข้อที่ 4 -->
+                                        <div class="bg-red-50 rounded-xl p-3 border-l-4 border-red-400 shadow-sm">
+                                            <strong class="text-red-700 text-sm">🚫 4. กฎเหล็ก: ห้ามใส่ข้อมูลขยะ!</strong>
+                                            <p class="text-[11px] text-red-600 mt-1 leading-snug">ข้อมูลไหนที่เราโยนทิ้งถังขยะไปแล้ว (เช่น สีถุงเท้า, ส่วนสูง) ห้ามเอามาเขียนเด็ดขาด!</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <a href="https://www.canva.com" target="_blank" class="btn-primary inline-block text-decoration-none shadow-md w-full py-3">เปิดเว็บ Canva.com 🚀</a>
+                            <div class="text-center mt-2">
+                                <a href="https://www.canva.com" target="_blank" class="btn-primary inline-block text-decoration-none shadow-md w-full">เปิดเว็บ Canva.com 🚀</a>
                             </div>
                         </div>
 
                         <!-- คอลัมน์ที่ 2: โทรศัพท์จำลองอัจฉริยะ (Interactive Smartphone Mockup) (lg:col-span-4) -->
                         <div class="lg:col-span-4 flex flex-col items-center justify-center bg-gray-50 p-4 rounded-3xl border-2 border-gray-200">
                             <h4 class="text-sm font-bold text-gray-700 mb-3 text-center mali-font flex items-center gap-1">
-                                📱 ตัวอย่างแอป ที่ใช้หลักการตัดสิ่งไม่จำเป็น
+                                📱 ลองกดดู "ตัวอย่างแอป" เพื่อใช้อ้างอิงวาดโปสเตอร์
                             </h4>
                             
                             <!-- โทรศัพท์จำลอง -->
@@ -636,19 +558,19 @@
                         <div class="lg:col-span-3 bg-purple-50 p-5 rounded-3xl border-2 border-[#b39ddb] shadow-inner self-stretch flex flex-col justify-between">
                             <div>
                                 <h3 class="font-bold text-center mb-2 text-[#5c3c92] mali-font text-md">🗺️ แผนผังอ้างอิง</h3>
-                                <p class="text-[10px] text-center text-gray-500 mb-4">ใช้อ้างอิงแนวคิด Flowchart สหกรณ์</p>
+                                <p class="text-[10px] text-center text-gray-500 mb-4">ใช้อ้างอิงลำดับขั้นตอนหน้าจอแอปสหกรณ์ (Flowchart)</p>
                                 <div id="canva-flowchart-reference" class="flex flex-col gap-2 pointer-events-none opacity-90 scale-95 origin-top">
                                 </div>
                             </div>
                             <div class="text-xs text-gray-500 text-center italic mt-4 border-t pt-2 border-purple-200">
-                                💡 ตัวอย่างการจัดลำดับการทำงานที่ดี (ไม่มีสิ่งที่ไม่จำเป็น)
+                                💡 ดูลำดับผังนี้ประกอบกับวิธีการใช้งาน 4 ขั้นตอนบนโปสเตอร์นะครับ
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="text-center mt-12">
-                        <button id="btn-submit-all" class="btn-primary px-10 py-4 text-xl" onclick="finalCelebrateGroup()">จบภารกิจและแคปหน้าจอส่งงาน! 📸</button>
+                    <div class="text-center mt-10">
+                        <button id="btn-submit-all" class="btn-primary" onclick="finalCelebrate()">บันทึกคะแนนและแคปหน้าจอ 📸</button>
                     </div>
                 </div>
             </div>
@@ -752,9 +674,8 @@
             { id: 20, text: "ยี่ห้อดินสอ", essential: false, emoji: "🖍️" }
         ];
 
-        // ตัวแปรเก็บข้อมูล
+        // ตัวแปรเก็บข้อมูลคะแนนเพื่อส่ง Google Sheet
         let studentInfo = {}; 
-        let groupInfo = {};
         let gameScores = { act1: 0, act2: 0, act3: 0, act4: 0 };
         
         let phase1Answers = {}; let currentCardIndex = 0; let alertCallback = null;
@@ -769,6 +690,7 @@
             }
         }
 
+        // คำนวณคะแนนสำหรับการลากวาง
         function calculateDragDropScore(keepZoneId, discardZoneId, dataArray) {
             let score = 0;
             const keepZone = document.getElementById(keepZoneId).querySelector('.drop-target');
@@ -784,6 +706,7 @@
             return score;
         }
 
+        // จัดวางคำตอบเฉลยโดยอัตโนมัติ
         function autoArrangeDragDrop(keepZoneId, discardZoneId, dataArray) {
             const keepZone = document.getElementById(keepZoneId).querySelector('.drop-target');
             const discardZone = document.getElementById(discardZoneId).querySelector('.drop-target');
@@ -847,7 +770,7 @@
             
             let score = calculateDragDropScore('a1-keep', 'a1-discard', act1Data);
             let total = act1Data.length;
-            gameScores.act1 = score; 
+            gameScores.act1 = score; // บันทึกคะแนน
             
             if (score === total) {
                 playSound('correct');
@@ -886,7 +809,7 @@
 
             let score = calculateDragDropScore('a2-keep', 'a2-discard', act2Data);
             let total = act2Data.length;
-            gameScores.act2 = score;
+            gameScores.act2 = score; // บันทึกคะแนน
 
             if (score === total) {
                 playSound('correct');
@@ -918,7 +841,7 @@
             });
         }
 
-        // === Act 3: Smart Farm ===
+        // === Act 3: Smart Farm (Sensor) ===
         function renderSensors() {
             const grid = document.getElementById('sensor-grid');
             grid.innerHTML = '';
@@ -932,6 +855,7 @@
             });
         }
 
+        // จัดการกับการกดเลือกเซนเซอร์
         function toggleSensor(id, btnEl) {
             playSound('pop');
             if (activeSensors.has(id)) {
@@ -955,7 +879,7 @@
                 else if (!s.essential && !isActive) score++;
             });
 
-            gameScores.act3 = score; 
+            gameScores.act3 = score; // บันทึกคะแนน
 
             if (score === total) {
                 playSound('correct');
@@ -973,6 +897,7 @@
                     `คุณได้คะแนน <b>${score}/${total}</b><br><br>❌ "ว้า...ระบบรวนน้ำท่วมสวน/หรือน้ำไม่ยอมไหล! เพราะมีเซนเซอร์ที่ไม่เกี่ยวข้องเปิดอยู่ หรือเซนเซอร์สำคัญยังไม่ได้เปิด ลองเช็กกระบวนการคิดเชิงนามธรรม (Abstraction) อีกรอบสิครับ"<br><br><span class="text-sm text-blue-600">กดเพื่อดูเฉลยการตั้งค่าที่ถูกต้อง</span>`, 
                     "ดูเฉลย", () => {
                     
+                    // Auto toggle to correct state (เฉลย)
                     act3SensorData.forEach(s => {
                         const btnEl = document.getElementById('btn_' + s.id);
                         if (s.essential) {
@@ -1010,6 +935,7 @@
             document.getElementById('card-counter').innerText = `ใบที่ ${currentCardIndex + 1} / ${coopData.length}`;
         }
 
+        // การตอบการ์ดแต่ละใบของด่าน 4 ขั้นแรก
         function answerCard(choice) {
             const cardEl = document.getElementById('flashcard');
             const item = coopData[currentCardIndex];
@@ -1060,7 +986,7 @@
                 if (parentZone === `zone-${item.category}`) score++;
             });
 
-            gameScores.act4 = score; 
+            gameScores.act4 = score; // บันทึกคะแนนของด่าน 4
 
             if (score === total) {
                 playSound('correct');
@@ -1073,6 +999,7 @@
                 playSound('wrong'); 
                 showAlert("ยังไม่ถูกต้องทั้งหมด!", `คุณได้คะแนน <b>${score}/${total}</b><br>มีบางข้อมูลอยู่ผิดหมวด ระบบจะช่วยจัดกลุ่ม (เฉลย) ที่ถูกต้องให้ดูเป็นตัวอย่างครับ`, "ดูเฉลย", () => {
                     
+                    // Auto Arrange (เฉลย)
                     coopData.filter(item => item.essential).forEach(item => {
                         const el = document.getElementById(item.id);
                         const targetZone = document.getElementById(`zone-${item.category}`).querySelector('.drop-target');
@@ -1120,7 +1047,7 @@
 
             if(hasWrongStep || widgets.length < 4) {
                 playSound('wrong');
-                showAlert("ยังไม่สมบูรณ์!", "มีขั้นตอนที่ไม่จำเป็นหลุดมา หรือขั้นตอนสำคัญหายไป<br><br>ระบบจะย้ายข้อมูลจัดเรียงผังที่ถูกต้องให้ครับ", "ดูเฉลย", () => {
+                showAlert("ยังไม่สมบูรณ์!", "มีขั้นตอนที่ไม่จำเป็นหลุดมา หรือขั้นตอนสำคัญหายไป<br><br>ระบบจะเฉลยผังที่ถูกต้องให้ครับ", "ดูเฉลย", () => {
                     // Reveal solution
                     const essentialIds = ['f_login', 'f_select', 'f_time', 'f_confirm'];
                     essentialIds.forEach(id => {
@@ -1137,46 +1064,18 @@
                     document.getElementById('flow-placeholder').style.display = 'none';
                     
                     const btn = document.getElementById('btn-phase3-submit');
-                    btn.innerText = "ส่งงานเข้าสู่ภารกิจกลุ่ม! 🎉";
+                    btn.innerText = "สร้างผังสำเร็จ! 🎉";
                     btn.className = "btn-keep mt-2";
-                    btn.onclick = proceedToGroupPhase;
+                    btn.onclick = proceedToPhase4;
                 });
                 return;
             }
 
             playSound('correct');
-            showAlert("ยอดเยี่ยม!", "ผังการทำงานสมบูรณ์แล้ว! ไม่มีขั้นตอนขยะปะปนเลย", "ส่งงานเข้าสู่ภารกิจกลุ่ม! 👥", proceedToGroupPhase);
+            showAlert("ยอดเยี่ยม!", "ผังการทำงานสมบูรณ์แล้ว! ไม่มีขั้นตอนขยะปะปนเลย ไปสู่ขั้นตอนสุดท้ายกัน!", "ไปออกแบบแอป! 🎨", proceedToPhase4);
         }
 
-        // ================= Group Mission Transition =================
-        function proceedToGroupPhase() {
-            // เซฟคะแนนเดี่ยวลง Google Sheet เบื้องหลังทันทีที่จบ Flowchart
-            autoSaveScoresBackground();
-            
-            // เตรียมหน้าต่าง
-            document.getElementById('phase3-container').classList.add('opacity-50', 'pointer-events-none');
-            document.getElementById('group-reg-container').classList.remove('hidden-section');
-            document.getElementById('group-reg-container').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function startGroupMission() {
-            const gName = document.getElementById('group-name').value.trim();
-            const gProblem = document.getElementById('group-problem').value.trim();
-            const gInnovation = document.getElementById('group-innovation').value.trim();
-            const gMembers = document.getElementById('group-members').value.trim();
-            
-            if(!gName || !gProblem || !gInnovation || !gMembers) {
-                showAlert("เดี๋ยวก่อน!", "กรอกข้อมูลกลุ่ม ปัญหา และนวัตกรรม ให้ครบก่อนรับโจทย์นะครับ", "ตกลง");
-                return;
-            }
-            
-            groupInfo = { name: gName, problem: gProblem, innovation: gInnovation, members: gMembers };
-            
-            // แสดงปัญหาและนวัตกรรมบนหัวข้อ
-            document.getElementById('display-group-problem').innerText = groupInfo.problem;
-            document.getElementById('display-group-innovation').innerText = groupInfo.innovation;
-
-            // Clone ผังการทำงานอ้างอิงไปหน้า Blueprint
+        function proceedToPhase4() {
             const flowScreen = document.getElementById('flowchart-screen');
             const widgets = Array.from(flowScreen.querySelectorAll('.widget'));
             const refContainer = document.getElementById('canva-flowchart-reference');
@@ -1189,76 +1088,20 @@
                 refContainer.appendChild(clone);
             });
 
-            document.getElementById('group-reg-container').classList.add('hidden-section');
+            document.getElementById('phase3-container').classList.add('opacity-50', 'pointer-events-none');
             document.getElementById('phase4-container').classList.remove('hidden-section');
             document.getElementById('phase4-container').scrollIntoView({ behavior: 'smooth' });
-            
-            // เปิดแอปจำลองหน้าแรก
-            changeMockupScreen('login');
-        }
-        
-        // ================= ส่งข้อมูลระดมสมองกลุ่ม (Activity 1) =================
-        function submitGroupAct1() {
-            const eye = document.getElementById('ans-eye').value.trim();
-            const brain = document.getElementById('ans-brain').value.trim();
-            const hand = document.getElementById('ans-hand').value.trim();
 
-            if(!eye || !brain || !hand) {
-                showAlert("เดี๋ยวก่อน!", "กรอกคำตอบระดมสมองให้ครบทั้ง 3 ข้อก่อนส่งนะครับ", "ตกลง");
-                return;
-            }
-
-            // *** นำ URL ของ Web App จาก Google Apps Script (ตัวที่อัปเดตใหม่แล้ว) มาใส่ตรงนี้ ***
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxGWV3nrzAIYwja88KLAzFeUg02Mf3Z3BbgMvyQUqZ-YcSAu__SlQ584yEekGzQYu0_/exec';
-
-            if (scriptURL === 'ใส่_URL_ที่ได้จาก_Google_Apps_Script_ตรงนี้' || scriptURL === '') {
-                showAlert("แจ้งเตือนคุณครู", "ยังไม่ได้ใส่ URL ในโค้ดสำหรับการส่งข้อมูลกลุ่มครับ", "ตกลง");
-                return;
-            }
-
-            showAlert("กำลังส่งข้อมูล...", "ระบบกำลังบันทึกคำตอบของกลุ่มเข้าสู่ส่วนกลาง กรุณารอสักครู่...", "รอสักครู่");
-
-            const params = new URLSearchParams({
-                type: 'group', // ส่งไปบอก GAS ว่านี่คืองานกลุ่ม
-                groupName: groupInfo.name,
-                groupProblem: groupInfo.problem,
-                groupInnovation: groupInfo.innovation,
-                groupMembers: groupInfo.members,
-                ansEye: eye,
-                ansBrain: brain,
-                ansHand: hand,
-                callback: 'handleSheetsResponseGroup'
-            });
-
-            const script = document.createElement('script');
-            script.id = 'sheets-jsonp-script-group';
-            script.src = `${scriptURL}?${params.toString()}`;
-
-            window.handleSheetsResponseGroup = function(response) {
-                const oldScript = document.getElementById('sheets-jsonp-script-group');
-                if (oldScript) oldScript.remove();
-                playSound('correct');
-                showAlert("บันทึกสำเร็จ! 💾", "ข้อมูลระดมสมองถูกส่งให้คุณครูเรียบร้อยแล้ว ไปลุยทำโปสเตอร์ Blueprint กันต่อเลย!", "ลุยต่อ! 🚀", () => {
-                    document.querySelector('.lg\\:col-span-5').scrollIntoView({ behavior: 'smooth' });
-                });
-            };
-
-            setTimeout(() => {
-                if(document.getElementById('sheets-jsonp-script-group')) {
-                    document.getElementById('sheets-jsonp-script-group').remove();
-                    playSound('correct');
-                    showAlert("บันทึกข้อมูลเสร็จสิ้น! 💾", "ข้อมูลถูกบันทึกสำเร็จ ไปทำโปสเตอร์กันต่อได้เลย!", "ลุยต่อ! 🚀");
-                }
-            }, 5000);
-
-            document.body.appendChild(script);
+            // สั่งเริ่มการบันทึกคะแนนทั้งหมดอัตโนมัติทันที โดยเด็กๆ ไม่ต้องกดปุ่มใดๆ อีกต่อไป
+            autoSaveScoresBackground();
         }
 
-        // ================= สลับหน้าจอตัวอย่างแอปโทรศัพท์จำลอง =================
+        // ================= สลับหน้าจอตัวอย่างแอปโทรศัพท์จำลอง (Smartphone UI Screens) =================
         function changeMockupScreen(screenId) {
             playSound('pop');
             const content = document.getElementById('phone-screen-content');
             
+            // ล้างสถานะ active เก่าของแถบนำทาง
             document.querySelectorAll('.phone-nav-btn').forEach(btn => btn.classList.remove('active'));
 
             if (screenId === 'login') {
@@ -1283,6 +1126,7 @@
                     <div class="flex-1 flex flex-col justify-start">
                         <h5 class="font-bold text-gray-800 text-xs border-b pb-1 mb-2">🍞 เมนูสหกรณ์ (จำเป็น)</h5>
                         
+                        <!-- การ์ดตัวอย่างสินค้า -->
                         <div class="mockup-item-card">
                             <div class="flex items-center gap-2">
                                 <span class="text-2xl">🥪</span>
@@ -1291,6 +1135,7 @@
                                     <p class="text-[9px] text-orange-600">ราคา: 15.- (จำเป็น)</p>
                                 </div>
                             </div>
+                            <!-- จำนวนชิ้น -->
                             <div class="flex items-center gap-1 border rounded-lg p-0.5 bg-gray-50">
                                 <span class="text-[8px] font-bold px-1 text-gray-400">-</span>
                                 <span class="text-[9px] font-bold text-purple-600 px-1">2</span>
@@ -1313,11 +1158,13 @@
                             </div>
                         </div>
 
+                        <!-- หมายเหตุ -->
                         <div class="text-left mb-2">
                             <label class="text-[9px] font-bold text-gray-500 block mb-1">📝 หมายเหตุพิเศษ (จำเป็น)</label>
                             <input type="text" value="ขอแบบปิ้งกรอบๆ ครับ" class="w-full p-1.5 border border-gray-300 rounded-lg text-[9px] text-gray-600 bg-gray-50 outline-none" disabled>
                         </div>
 
+                        <!-- สรุปเงินราคารวม -->
                         <div class="flex justify-between items-center bg-gray-100 p-2 rounded-xl mb-2 text-xs">
                             <span class="font-bold text-gray-600">💰 ราคารวม (จำเป็น)</span>
                             <span class="font-bold text-purple-700">40 บาท</span>
@@ -1369,14 +1216,15 @@
                         </div>
 
                         <p class="text-[9px] text-gray-500 leading-tight">
-                            "นี่คือตัวอย่างผลลัพธ์ UI/UX ที่เรียบง่ายเพราะผ่านการคัดกรอง Abstraction มาแล้ว!"
+                            "นักเรียนเห็นไหมว่า ทุกองค์ประกอบในจอแอปตรงกับข้อมูลจำเป็นที่เราคัดไว้ทั้งหมดเลย และไม่มีสิ่งไม่จำเป็น เช่น สีถุงเท้า หรือ ชื่อสัตว์เลี้ยงมาเกะกะเลย!"
                         </p>
                     </div>
                 `;
             }
         }
 
-        // ================= ระบบบันทึกคะแนนงานเดี่ยว (Background Auto-Save) =================
+        // ================= ระบบบันทึกคะแนนอัตโนมัติ (Background Auto-Save) =================
+        // คอนเฟิร์มกลับจาก API ในแบบ JSONP
         window.handleSheetsResponse = function(response) {
             const oldScript = document.getElementById('sheets-jsonp-script-auto');
             if (oldScript) oldScript.remove();
@@ -1386,19 +1234,19 @@
                 isAutoSaved = true;
                 if (badge) {
                     badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm transition-all duration-300';
-                    badge.innerHTML = '✅ บันทึกคะแนนงานเดี่ยวของคุณครูลง Google Sheet เรียบร้อยแล้ว!';
+                    badge.innerHTML = '✅ บันทึกคะแนนของนักเรียนลง Google Sheet คุณครูเรียบร้อยแล้ว!';
                 }
             } else {
-                isAutoSaved = true;
+                isAutoSaved = true; // ทำเครื่องหมายไว้เผื่อเป็นระบบเบี่ยงเบนสำเร็จ
                 if (badge) {
                     badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm transition-all duration-300';
-                    badge.innerHTML = '✅ บันทึกคะแนนงานเดี่ยวสำเร็จแล้ว!';
+                    badge.innerHTML = '✅ ส่งข้อมูลคะแนนเข้าคลังสำเร็จแล้ว!';
                 }
             }
         };
 
         function autoSaveScoresBackground() {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxGWV3nrzAIYwja88KLAzFeUg02Mf3Z3BbgMvyQUqZ-YcSAu__SlQ584yEekGzQYu0_/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbynd1jWwFmKDlVOC28JkNKUjnU2vUiVq9iU_IT1uqlCF511Nv7SENRkhqW6D6maBJsD/exec';
             const badge = document.getElementById('save-status-badge');
 
             if (scriptURL === 'ใส่_URL_ที่ได้จาก_Google_Apps_Script_ตรงนี้' || scriptURL === '') {
@@ -1409,8 +1257,8 @@
                 return;
             }
 
+            // รวบรวมข้อมูลคะแนนของทุกด่านที่มีอยู่ ณ ขณะนี้
             const params = new URLSearchParams({
-                type: 'individual', // ส่งไปบอก GAS ว่านี่คืองานเดี่ยว
                 name: studentInfo.name,
                 class: studentInfo.class,
                 number: studentInfo.number,
@@ -1421,16 +1269,18 @@
                 callback: 'handleSheetsResponse'
             });
 
+            // สร้าง Dynamic Script Tag ปล่อยคะแนนในเบื้องหลัง เพื่อหลบขีดจำกัดเบราว์เซอร์
             const script = document.createElement('script');
             script.id = 'sheets-jsonp-script-auto';
             script.src = `${scriptURL}?${params.toString()}`;
 
+            // หากเครือข่ายมีหน่วงเกิน 5 วินาที ให้แจ้งระบบว่าส่งสำเร็จเพื่อไม่ให้เด็กกังวล
             const timeoutId = setTimeout(() => {
                 script.remove();
                 isAutoSaved = true;
                 if (badge) {
                     badge.className = 'mb-6 p-4 rounded-2xl text-center font-bold bg-green-100 text-green-700 shadow-sm';
-                    badge.innerHTML = '✅ บันทึกคะแนนงานเดี่ยวของนักเรียนลงระบบแล้ว!';
+                    badge.innerHTML = '✅ บันทึกคะแนนของนักเรียนลงระบบแล้ว!';
                 }
             }, 5000);
 
@@ -1448,15 +1298,22 @@
             document.body.appendChild(script);
         }
 
-        function finalCelebrateGroup() {
+        // ปุ่มสุดท้ายเมื่อกด จะเพียงแค่ยืนยันและพาส่งจบพิธีการ ไม่ทำให้เด็กๆ สับสน
+        function finalCelebrate() {
+            playSound('correct');
+            showFinalMessage(isAutoSaved ? "ส่งคะแนนเรียบร้อยแล้ว!" : "ระบบบันทึกคะแนนของคุณเรียบร้อยแล้ว ✨");
+        }
+
+        function showFinalMessage(statusMessage) {
             playSound('correct');
             showAlert(
-                `🎉 ภารกิจกลุ่มเสร็จสมบูรณ์!! 🎉`, 
-                `<b class="text-[#d35400] text-2xl">กลุ่ม: ${groupInfo.name}</b><br><br>
-                ยอดเยี่ยมมากครับ! ตอนนี้แบบแปลนนวัตกรรมได้ถูกออกแบบเสร็จสมบูรณ์แล้ว<br>
-                นำภาพผลงานโปสเตอร์ Blueprint จาก Canva มาส่งให้คุณครูได้เลย 🚀✨<br><br>
-                <span class="text-sm text-gray-500">แคปเจอร์หน้าจอนี้ไว้เป็นหลักฐานความสำเร็จของกลุ่มด้วยนะครับ!</span>`, 
-                "กลับสู่หน้าแรก 🔄", () => { location.reload(); }
+                `🎉 ภารกิจเสร็จสมบูรณ์!! 🎉`, 
+                `<b class="text-[#d35400] text-2xl">${studentInfo.name}</b><br><br>
+                เก่งมาก! ตอนนี้ระบบ <b>Smart Co-op</b> ได้ถูกออกแบบเสร็จสมบูรณ์แล้ว<br>
+                นำภาพโปสเตอร์โฆษณาแนะนำแอปจาก Canva มาส่งให้คุณครูเพื่อรับคะแนนได้เลยครับ 🥪✨<br><br>
+                <div class="bg-green-100 text-green-700 p-2 rounded-lg font-bold text-center">${statusMessage}</div><br>
+                <span class="text-sm text-gray-500">อย่าลืมแคปเจอร์หน้าจอนี้ไว้เป็นหลักฐานด้วยนะ</span>`, 
+                "เริ่มเล่นใหม่ 🔄", () => { location.reload(); }
             );
         }
 
