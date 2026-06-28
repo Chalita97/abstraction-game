@@ -266,7 +266,7 @@
                 
                 <!-- Part 1: Sorting -->
                 <div id="act1-sort-phase">
-                    <p class="text-center text-gray-600 mb-6 mali-font">1. วิเคราะห์ข้อมูลจากคำให้การแล้วเลือกลากเฉพาะข้อมูลที่ <b>"จำเป็น"</b> ลงป้าย</p>
+                    <p class="text-center text-gray-600 mb-6 mali-font">แมวของยายหายไป! วิเคราะห์ข้อมูลจากคำให้การแล้วเลือกลากข้อมูลที่ <b>"จำเป็น"</b> ในการทำป้ายประกาศตามหาลงในช่องจำเป็น และลากข้อมูลไม่จำเป็นลงในช่องทิ้งลงถังขยะ</p>
                     <div class="story-box italic">"แมวของยายชื่อ 'โมจิ' มันน่ารักมากเลยลูก ชอบกินปลาทูทอดร้านปากซอย ตอนนอนชอบนอนเบาะสีชมพูลายจุด โมจิเป็น <b>แมวสีขาวล้วน แต่มีแต้มสีดำที่ตาขวาเหมือนใส่แว่น</b> เมื่อเช้ายายเห็นมันวิ่งตามผีเสื้อสีเหลืองไปทาง <b>สวนสาธารณะหลังหมู่บ้าน</b> ยายเสียใจมาก"</div>
                     <div class="bg-gray-50 p-4 rounded-2xl border-2 border-gray-200 mb-6 min-h-[100px] text-center" id="a1-pool" ondragover="allowDrop(event)" ondrop="dropGeneral(event, 'a1-pool')"></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -435,7 +435,7 @@
             <div id="phase4-container" class="mt-12 hidden-section">
                 <div class="bg-white rounded-[40px] p-6 md:p-8 shadow-sm border-4 border-dashed border-[#a29bfe]">
                     <h2 class="text-3xl text-center mb-2 text-[#6c5ce7]">ขั้นตอนที่ 4: ออกแบบหน้าจอแอปพลิเคชัน 🎨</h2>
-                    <p class="text-center text-gray-600 mb-6 mali-font">นำผังการทำงานที่สมบูรณ์แล้ว ไปออกแบบหน้าตาแอปพลิเคชันให้สวยงาม</p>
+                    <p class="text-center text-gray-600 mb-6 mali-font">นำกระบวนการคิดเชิงนามธรรมที่เรียนรู้มาทั้งหมดไปใช้ประชาสัมพันธ์ระบบจริงร่วมกับเพื่อน ๆ</p>
                     
                     <!-- แถบแสดงสถานะเซฟอัตโนมัติแจ้งเตือนให้นักเรียนทราบ -->
                     <div id="save-status-badge" class="mb-6 p-4 rounded-2xl text-center font-bold bg-yellow-100 text-yellow-700 shadow-sm transition-all duration-300">
@@ -444,31 +444,50 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 justify-center items-stretch">
                         
-                        <!-- คอลัมน์ที่ 1: โจทย์คู่มือ Canva & เงื่อนไขการออกแบบอย่างละเอียด (lg:col-span-5) -->
+                        <!-- คอลัมน์ที่ 1: โจทย์คู่มือ Canva & เงื่อนไขการออกแบบโปสเตอร์ประชาสัมพันธ์ด้วย Abstraction (lg:col-span-5) -->
                         <div class="lg:col-span-5 bg-blue-50 p-5 rounded-3xl border-2 border-blue-200 flex flex-col justify-between">
                             <div>
                                 <div class="text-center mb-4">
-                                    <div class="text-5xl mb-2">🎨</div>
-                                    <h3 class="text-xl font-bold text-blue-800">ได้เวลาเปิด Canva!</h3>
+                                    <div class="text-5xl mb-2">📢</div>
+                                    <h3 class="text-xl font-bold text-blue-800">ภารกิจสร้างโปสเตอร์แนะนำแอป</h3>
                                     <p class="text-xs text-gray-600">สอดคล้องกับ "กระบวนการคิดเชิงนามธรรม"</p>
                                 </div>
 
                                 <div class="bg-white rounded-2xl p-4 border border-blue-100 shadow-sm text-left text-xs mb-4">
+                                    <h4 class="text-sm font-bold text-purple-800 mb-2 flex items-center gap-1">
+                                        <span>🎨</span> รายละเอียดกิจกรรม:
+                                    </h4>
+                                    <p class="text-[11px] text-gray-600 mb-3 leading-relaxed">
+                                        ครูมอบหมายให้นักเรียนใช้โปรแกรม <b>Canva</b> ออกแบบ <strong>"โปสเตอร์โฆษณาแนะนำการใช้งานแอป Smart Co-op" (1 หน้า)</strong> เพื่อนำไปแปะประชาสัมพันธ์หน้าสหกรณ์โรงเรียน ดึงดูดให้เพื่อนๆ มาใช้งานร่วมกัน
+                                    </p>
+
                                     <h4 class="text-sm font-bold text-[#e67e22] mb-2 flex items-center gap-1">
-                                        <span>🎯</span> เงื่อนไขสำคัญที่ต้องมีบนหน้าจอ:
+                                        <span>🎯</span> เงื่อนไขการสร้างสรรค์ (ใช้ Abstraction):
                                     </h4>
                                     <ul class="space-y-3">
                                         <li class="bg-green-50/50 p-2.5 rounded-lg border border-green-150">
-                                            <strong class="text-green-800">✅ ส่วนที่ "ต้องมี" (ข้อมูลจำเป็น):</strong>
-                                            <ul class="list-disc pl-4 mt-1 text-[11px] text-gray-600 space-y-1">
-                                                <li>มีช่องกรอก <span class="underline font-semibold text-gray-800">รหัสนักเรียน / ชื่อ-ชั้น-เลขที่</span></li>
-                                                <li>มีส่วนแสดงสินค้า จำนวน ปุ่มเพิ่ม-ลด ราคารวม และ <span class="underline font-semibold text-gray-800">โน้ตพิมพ์พิเศษ</span></li>
-                                                <li>มีเมนูเลือก <span class="underline font-semibold text-gray-800">เวลารับของ</span> และบันทึกวันที่</li>
-                                            </ul>
+                                            <strong class="text-green-800">1. สกัดคู่มือให้สั้นกระชับ:</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 pl-1 leading-relaxed">
+                                                ต้องวิเคราะห์และสกัดวิธีการใช้งานแอปให้เหลือเพียงแค่ <strong>3 ขั้นตอนสั้นๆ</strong> ที่เพื่อนๆ อ่านแล้วเข้าใจทำตามได้ทันที (ตัดคำอธิบายที่ยาวและเยิ่นเย้อทิ้งไป!)
+                                            </p>
                                         </li>
-                                        <li class="bg-red-50/50 p-2.5 rounded-lg border border-red-150 text-[11px] text-gray-700">
-                                            <strong class="text-red-700">🚫 ส่วนที่ "ห้ามใส่" (ข้อมูลไม่จำเป็น):</strong>
-                                            <p class="mt-0.5">ห้ามใส่ข้อมูลที่เราคัดทิ้งไปแล้ว เช่น ยี่ห้อดินสอ, เกรดคณิตศาสตร์, สีถุงเท้า, ส่วนสูง, หรือเมนูโปรดตอน ป.1 โดยเด็ดขาด!</p>
+                                        <li class="bg-blue-50/50 p-2.5 rounded-lg border border-blue-150">
+                                            <strong class="text-blue-800">2. ระบุ "ข้อมูลจำเป็น" ที่ต้องเตรียม:</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 pl-1 leading-relaxed">
+                                                โปสเตอร์ต้องระบุให้ชัดเจนว่า นักเรียนที่มาใช้งานแอปนี้ต้องเตรียมตัวนำข้อมูลจำเป็นอะไรมาพิมพ์ลงแอปบ้าง (เช่น <span class="underline font-bold text-gray-800">เตรียมรหัสนักเรียน</span> และ <span class="underline font-bold text-gray-800">รายการเมนูอาหารที่อยากกิน</span> ให้พร้อม!)
+                                            </p>
+                                        </li>
+                                        <li class="bg-yellow-50/50 p-2.5 rounded-lg border border-yellow-150">
+                                            <strong class="text-yellow-700">3. ตกแต่งดึงดูดสายตา:</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 pl-1 leading-relaxed">
+                                                ออกแบบให้ดึงดูดใจเพื่อนๆ โดยใช้ไอคอน ลายการ์ตูน และการจัดวางที่สวยงาม สดใส น่าใช้งาน
+                                            </p>
+                                        </li>
+                                        <li class="bg-red-50/60 p-2.5 rounded-lg border border-red-150">
+                                            <strong class="text-red-700">🚫 ข้อควรระวัง (คัดกรอง Abstraction):</strong>
+                                            <p class="text-[11px] text-gray-600 mt-1 pl-1 leading-relaxed font-semibold">
+                                                ห้ามนำรายละเอียดที่ไม่จำเป็นที่เราขีดฆ่าคัดทิ้งไปแล้ว (เช่น สีถุงเท้า, เกรดวิชาคณิตศาสตร์, ส่วนสูง) มาใส่ในโปสเตอร์เด็ดขาด!
+                                            </p>
                                         </li>
                                     </ul>
                                 </div>
@@ -482,7 +501,7 @@
                         <!-- คอลัมน์ที่ 2: โทรศัพท์จำลองอัจฉริยะ (Interactive Smartphone Mockup) (lg:col-span-4) -->
                         <div class="lg:col-span-4 flex flex-col items-center justify-center bg-gray-50 p-4 rounded-3xl border-2 border-gray-200">
                             <h4 class="text-sm font-bold text-gray-700 mb-3 text-center mali-font flex items-center gap-1">
-                                📱 ลองกดเล่นดู "ตัวอย่างหน้าจอแอป"
+                                📱 ลองกดดู "ตัวอย่างแอป" เพื่อใช้อ้างอิงวาดโปสเตอร์
                             </h4>
                             
                             <!-- โทรศัพท์จำลอง -->
@@ -550,7 +569,7 @@
                                 </div>
                             </div>
                             <div class="text-xs text-gray-500 text-center italic mt-4 border-t pt-2 border-purple-200">
-                                💡 ดูผังด้านบนนี้ประกอบกับหน้าจอมือถือตัวอย่างได้เลยนะครับ
+                                💡 ดูลำดับผังนี้ประกอบกับวิธีการใช้งาน 3 ขั้นตอนบนโปสเตอร์นะครับ
                             </div>
                         </div>
 
@@ -1298,7 +1317,7 @@
                 `🎉 ภารกิจเสร็จสมบูรณ์!! 🎉`, 
                 `<b class="text-[#d35400] text-2xl">${studentInfo.name}</b><br><br>
                 เก่งมาก! ตอนนี้ระบบ <b>Smart Co-op</b> ได้ถูกออกแบบเสร็จสมบูรณ์แล้ว<br>
-                นำภาพหน้าจอแอปจาก Canva มาส่งให้คุณครูเพื่อรับคะแนนได้เลยครับ 🥪✨<br><br>
+                นำภาพโปสเตอร์โฆษณาแนะนำแอปจาก Canva มาส่งให้คุณครูเพื่อรับคะแนนได้เลยครับ 🥪✨<br><br>
                 <div class="bg-green-100 text-green-700 p-2 rounded-lg font-bold text-center">${statusMessage}</div><br>
                 <span class="text-sm text-gray-500">อย่าลืมแคปเจอร์หน้าจอนี้ไว้เป็นหลักฐานด้วยนะ</span>`, 
                 "เริ่มเล่นใหม่ 🔄", () => { location.reload(); }
